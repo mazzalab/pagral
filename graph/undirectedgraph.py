@@ -4,8 +4,8 @@ from graph.basegraph import BaseGraph
 
 
 class UGraph(BaseGraph):
-    def __init__(self, numvertex: int):
-        super().__init__(numvertex)
+    def __init__(self, size: int = None, adjmatrix: np.array = None, weighted: bool = False):
+        super().__init__(size, adjmatrix, weighted)
 
     def set_vertex(self, vtx, id):
         if 0 <= vtx <= self.numvertex:

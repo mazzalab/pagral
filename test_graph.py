@@ -1,6 +1,6 @@
 from graph.undirectedgraph import UGraph
 
-G =UGraph(6)
+G = UGraph(size=6)
 # G.set_vertex(0,'a')
 # G.set_vertex(1,'b')
 # G.set_vertex(2,'c')

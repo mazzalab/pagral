@@ -1,5 +1,5 @@
 __author__ = ["Tommaso Mazza"]
-__copyright__ = u"Copyright 2020, The Pyntacle Project"
+__copyright__ = u"Copyright 2020, The Pagral Project"
 __credits__ = [u"Ferenc Jordan"]
 __version__ = u"2 beta"
 __maintainer__ = u"Tommaso Mazza"
@@ -27,12 +27,21 @@ __license__ = u"""
 import numpy as np
 from abc import ABC, abstractmethod
 
+
+def mutex_args(func):
+    def init_wrapper(self, size: int, adjmatrix: np.array, weighted):
+        if size and adjmatrix:
+            raise ValueError("size and adjmatrix arguments are mutually exclusive")
+    return init_wrapper
+
+
 class BaseGraph(ABC):
-    def __init__(self, size:int, adjmatrix:np.array=None, weighted:bool=False):
+    @mutex_args
+    def __init__(self, size: int = None, adjmatrix: np.array = None, weighted: bool = False):
         self._size = size
 
         # A structured array with a name of type string of length 10 abd an object containing node attributes
-        self.V = np.empty(size, dtype={'names':('name', 'attrs'), 'formats':('U10', 'O')})
+        self.V = np.empty(size, dtype={'names': ('name', 'attrs'), 'formats': ('U10', 'O')})
         self.nametoidx = {}
 
         # self.V[0] = ("tim", {})
@@ -43,11 +52,11 @@ class BaseGraph(ABC):
             self.adjMatrix = -1 * np.ones((size, size), np.float)
         else:
             self.adjMatrix = np.zeros((size, size), np.bool)
-        
+
     @property
     def size(self):
         return self._size
-    
+
     def set_vertex(self, index, name):
         if 0 <= index < self.size:
             # self.V[]
