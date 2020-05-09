@@ -1,11 +1,11 @@
 __author__ = ["Tommaso Mazza"]
 __copyright__ = u"Copyright 2020, The Pagral Project"
 __credits__ = [u"Ferenc Jordan"]
-__version__ = u"2 beta"
+__version__ = u"1 beta"
 __maintainer__ = u"Tommaso Mazza"
 __email__ = "bioinformatics@css-mendel.it"
 __status__ = u"Development"
-__date__ = u"27/03/2020"
+__date__ = u"06/05/2020"
 __license__ = u"""
   Copyright (C) 2016-2020  Tommaso Mazza <t.mazza@css-mendel.it>
   Viale Regina Margherita 261, 00198 Rome, Italy
@@ -26,63 +26,117 @@ __license__ = u"""
 
 import numpy as np
 from abc import ABC, abstractmethod
+from typing import Dict, List
+from graph.vertex_set import VertexSet
+from graph.attribute import Attribute
 
 
 def mutex_args(func):
-    def init_wrapper(self, size: int, adjmatrix: np.array, weighted):
+    def init_wrapper(self, size: int, adjmatrix: np.array, names: List[str], weighted):
         if size and adjmatrix:
             raise ValueError("size and adjmatrix arguments are mutually exclusive")
+        func(self)
+
     return init_wrapper
 
 
 class BaseGraph(ABC):
     @mutex_args
-    def __init__(self, size: int = None, adjmatrix: np.array = None, weighted: bool = False):
-        self._size = size
+    def __init__(self, size: int = None, adjmatrix: np.array = None, names: List[str] = None, weighted: bool = False):
+        self.__weighted: bool = weighted
 
-        # A structured array with a name of type string of length 10 abd an object containing node attributes
-        self.V = np.empty(size, dtype={'names': ('name', 'attrs'), 'formats': ('U10', 'O')})
-        self.nametoidx = {}
-
-        # self.V[0] = ("tim", {})
-
-        # self.vertices = {}
-        # self.verticeslist = np.empty(size, np.object)
-        if weighted:
-            self.adjMatrix = -1 * np.ones((size, size), np.float)
+        if size:
+            self.__size = size
+            if weighted:
+                self.__adjmatrix: np.array = np.empty((size, size), dtype=np.float32)
+            else:
+                self.__adjmatrix: np.array = np.empty((size, size), dtype=np.bool)
         else:
-            self.adjMatrix = np.zeros((size, size), np.bool)
+            self.__size: int = adjmatrix.shape[0]
+            self.__adjmatrix: np.array = adjmatrix
 
-    @property
-    def size(self):
-        return self._size
+        if not names:
+            names: List[str] = [str(i) for i in range(self.__size)]
 
-    def set_vertex(self, index, name):
-        if 0 <= index < self.size:
-            # self.V[]
+        # Collection of vertices of the graph
+        self.__vertex_set: VertexSet = VertexSet(names)
 
-            self.vertices[name] = index
-            self.verticeslist[index] = name
+        # Global attributes of the graph
+        self.__graph_attrs: Dict[str, Attribute] = {}
+
+    def __getitem__(self, attr_key: str) -> Attribute:
+        if isinstance(attr_key, str):
+            return self.__graph_attrs[attr_key]
+        else:
+            raise TypeError('Index must be int, str or slice not {}'.format(type(attr_key).__name__))
+
+    def __setitem__(self, attr_key: str, attr_value: Attribute):
+        if isinstance(attr_key, str):
+            self.__graph_attrs[attr_key] = attr_value
+        else:
+            raise TypeError('Index must be int, str or slice not {}'.format(type(attr_key).__name__))
+
+    def size(self) -> int:
+        return self.__size
+
+    def vcount(self) -> int:
+        return self.__adjmatrix[0] - 1
 
     @abstractmethod
-    def set_edge(self, frm, to, cost=0):
-        frm = self.vertices[frm]
-        to = self.vertices[to]
-        self.adjMatrix[frm][to] = cost
-        # for directed graph do not add this
-        self.adjMatrix[to][frm] = cost
+    def ecount(self) -> int:
+        pass
 
-    def get_vertex(self):
-        return self.verticeslist
+    def is_weighted(self) -> bool:
+        return self.__weighted
 
-    def get_edges(self):
-        edges = []
-        for i in range(self.size):
-            for j in range(self.size):
-                if (self.adjMatrix[i][j] != -1):
-                    edges.append(
-                        (self.verticeslist[i], self.verticeslist[j], self.adjMatrix[i][j]))
-        return edges
+    # Properties of vertices and edges
+    @property
+    def V(self):
+        """
+        Get the vertex set
+        """
+        return self.__vertex_set
 
-    def get_matrix(self):
-        return self.adjMatrix
+    @V.setter
+    def V(self, names: List[str]):
+        """
+        Create and set the vertex set
+        :param names: List of names of vertices
+        """
+        if len(names) == self.__size:
+            self.__vertex_set = VertexSet(names)
+        else:
+            raise ValueError("The length of the list of names is incompatible with the graph size")
+
+    # Insert/delete methods
+    def add_vertex(self, name: str) -> int:
+        """
+        Add a new vertex
+        :param name: Name of the new vertex
+        :return: The index of the inserted vertex
+        """
+        temp_adjmatrix = np.zeros((self.__adjmatrix.shape[0] + 1, self.__adjmatrix.shape[1] + 1))
+        self.__adjmatrix[:-1, :-1] = temp_adjmatrix
+        self.__vertex_set._VertexSet__insert_vertex(name)
+        return self.vcount()
+
+    def delete_vertex(self, name):
+        """
+        Delete a vertex
+        :param name: Name of the vertex to be deleted
+        :return: The index of the deleted vertex
+        """
+        # TODO: elaborate more efficient strategy of node deletion as,e.g., nullify columns/rows instead of removing
+        node_idx = self.V.get_index(name)
+        self.__adjmatrix = np.delete(self.__adjmatrix, node_idx, 0)
+        self.__adjmatrix = np.delete(self.__adjmatrix, node_idx, 1)
+        self.__vertex_set._VertexSet__remove_vertex(name)
+        return node_idx
+
+    @abstractmethod
+    def add_edge(self, vertex_name1: str, vertex_name2: str):
+        pass
+
+    @abstractmethod
+    def delete_edge(self, vertex_name1: str, vertex_name2: str):
+        pass

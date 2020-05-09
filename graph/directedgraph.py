@@ -1,34 +1,18 @@
 import numpy as np
+from typing import List
 from abc import ABC, abstractmethod
+from graph.basegraph import BaseGraph
+
 
 class DGraph(BaseGraph):
-    def __init__(self, numvertex:int):
-        super.__init__()
+    def __init__(self, size: int = None, adjmatrix: np.array = None, names: List[str] = None, weighted: bool = False):
+        super().__init__(size, adjmatrix, names, weighted)
     
-    def set_vertex(self, vtx, id):
-        if 0 <= vtx <= self.numvertex:
-            self.vertices[id] = vtx
-            self.verticeslist[vtx] = id
+    def ecount(self):
+        pass
 
-    @abstractmethod
-    def set_edge(self, frm, to, cost=0):
-        frm = self.vertices[frm]
-        to = self.vertices[to]
-        self.adjMatrix[frm][to] = cost
-        # for directed graph do not add this
-        self.adjMatrix[to][frm] = cost
+    def add_edge(self, vertex_name1: str, vertex_name2: str):
+        pass
 
-    def get_vertex(self):
-        return self.verticeslist
-
-    def get_edges(self):
-        edges = []
-        for i in range(self.numvertex):
-            for j in range(self.numvertex):
-                if (self.adjMatrix[i][j] != -1):
-                    edges.append(
-                        (self.verticeslist[i], self.verticeslist[j], self.adjMatrix[i][j]))
-        return edges
-
-    def get_matrix(self):
-        return self.adjMatrix
+    def delete_edge(self, vertex_name1: str, vertex_name2: str):
+        pass
