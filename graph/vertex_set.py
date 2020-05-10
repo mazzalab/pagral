@@ -42,6 +42,9 @@ class VertexSet:
         else:
             raise TypeError('`attr_key` argument must be of type int or str, not {}'.format(type(attr_key).__name__))
 
+    def get_names(self) -> List[str]:
+        return list(self.__names.keys())
+
     def get_name(self, idx: int) -> str:
         return self.__idx[idx]
 

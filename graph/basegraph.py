@@ -5,7 +5,7 @@ __version__ = u"1 beta"
 __maintainer__ = u"Tommaso Mazza"
 __email__ = "bioinformatics@css-mendel.it"
 __status__ = u"Development"
-__date__ = u"06/05/2020"
+__date__ = u"10/05/2020"
 __license__ = u"""
   Copyright (C) 2016-2020  Tommaso Mazza <t.mazza@css-mendel.it>
   Viale Regina Margherita 261, 00198 Rome, Italy
@@ -29,65 +29,44 @@ from abc import ABC, abstractmethod
 from typing import Dict, List
 from graph.vertex_set import VertexSet
 from graph.attribute import Attribute
+from graph.graph_data import IGraphData, WeightedMatrixData, UnweightedMatrixData
 
 
-def mutex_args(func):
-    def init_wrapper(self, size: int, adjmatrix: np.array, names: List[str], weighted):
-        if size and adjmatrix:
-            raise ValueError("size and adjmatrix arguments are mutually exclusive")
-        func(self)
-
-    return init_wrapper
+def check_names(func):
+    def wrapper(graph_data: IGraphData=None, names: List[str]=None, weighted: bool=False):
+        if (graph_data and names and graph_data.size() == len(names)) or \
+                (graph_data and not names) or \
+                (not graph_data and not names):
+            func(graph_data, names, weighted)
+        else:
+            raise ValueError("Graph_data and names must have the same size")
+    return wrapper
 
 
 class BaseGraph(ABC):
-    @mutex_args
-    def __init__(self, size: int = None, adjmatrix: np.array = None, names: List[str] = None, weighted: bool = False):
-        self.__weighted: bool = weighted
+    @check_names
+    def __init__(self, graph_data: IGraphData = None, names: List[str] = None, weighted: bool = False):
+        self._weighted: bool = weighted
 
-        if size:
-            self.__size = size
-            if weighted:
-                self.__adjmatrix: np.array = np.empty((size, size), dtype=np.float32)
-            else:
-                self.__adjmatrix: np.array = np.empty((size, size), dtype=np.bool)
+        # Assign or create the proper internal IGraphData structure
+        if graph_data:
+            self._graph_data: IGraphData = graph_data
         else:
-            self.__size: int = adjmatrix.shape[0]
-            self.__adjmatrix: np.array = adjmatrix
+            if weighted:
+                self._graph_data: IGraphData = WeightedMatrixData()
+            else:
+                self._graph_data: IGraphData = UnweightedMatrixData()
+
+        self._size: int = self._graph_data.size()
 
         if not names:
-            names: List[str] = [str(i) for i in range(self.__size)]
+            names: List[str] = [str(i) for i in range(self._size)]
 
         # Collection of vertices of the graph
         self.__vertex_set: VertexSet = VertexSet(names)
 
         # Global attributes of the graph
         self.__graph_attrs: Dict[str, Attribute] = {}
-
-    def __getitem__(self, attr_key: str) -> Attribute:
-        if isinstance(attr_key, str):
-            return self.__graph_attrs[attr_key]
-        else:
-            raise TypeError('Index must be int, str or slice not {}'.format(type(attr_key).__name__))
-
-    def __setitem__(self, attr_key: str, attr_value: Attribute):
-        if isinstance(attr_key, str):
-            self.__graph_attrs[attr_key] = attr_value
-        else:
-            raise TypeError('Index must be int, str or slice not {}'.format(type(attr_key).__name__))
-
-    def size(self) -> int:
-        return self.__size
-
-    def vcount(self) -> int:
-        return self.__adjmatrix[0] - 1
-
-    @abstractmethod
-    def ecount(self) -> int:
-        pass
-
-    def is_weighted(self) -> bool:
-        return self.__weighted
 
     # Properties of vertices and edges
     @property
@@ -103,10 +82,40 @@ class BaseGraph(ABC):
         Create and set the vertex set
         :param names: List of names of vertices
         """
-        if len(names) == self.__size:
+        if len(names) == self._size:
             self.__vertex_set = VertexSet(names)
         else:
             raise ValueError("The length of the list of names is incompatible with the graph size")
+
+    @property
+    def graph_data(self):
+        return self._graph_data
+
+    @graph_data.setter
+    def graph_data(self, graph_data: IGraphData, names: List[str] = None):
+        self._graph_data = graph_data
+
+    def __getitem__(self, attr_key: str) -> Attribute:
+        if isinstance(attr_key, str):
+            return self.__graph_attrs[attr_key]
+        else:
+            raise TypeError('Index must be str, not {}'.format(type(attr_key).__name__))
+
+    def __setitem__(self, attr_key: str, attr_value: Attribute):
+        if isinstance(attr_key, str):
+            self.__graph_attrs[attr_key] = attr_value
+        else:
+            raise TypeError('Index must be str, not {}'.format(type(attr_key).__name__))
+
+    def vcount(self) -> int:
+        return self._size
+
+    @abstractmethod
+    def ecount(self) -> int:
+        pass
+
+    def is_weighted(self) -> bool:
+        return self._weighted
 
     # Insert/delete methods
     def add_vertex(self, name: str) -> int:
@@ -115,8 +124,7 @@ class BaseGraph(ABC):
         :param name: Name of the new vertex
         :return: The index of the inserted vertex
         """
-        temp_adjmatrix = np.zeros((self.__adjmatrix.shape[0] + 1, self.__adjmatrix.shape[1] + 1))
-        self.__adjmatrix[:-1, :-1] = temp_adjmatrix
+        self._graph_data.add(name)
         self.__vertex_set._VertexSet__insert_vertex(name)
         return self.vcount()
 
@@ -126,12 +134,9 @@ class BaseGraph(ABC):
         :param name: Name of the vertex to be deleted
         :return: The index of the deleted vertex
         """
-        # TODO: elaborate more efficient strategy of node deletion as,e.g., nullify columns/rows instead of removing
-        node_idx = self.V.get_index(name)
-        self.__adjmatrix = np.delete(self.__adjmatrix, node_idx, 0)
-        self.__adjmatrix = np.delete(self.__adjmatrix, node_idx, 1)
-        self.__vertex_set._VertexSet__remove_vertex(name)
-        return node_idx
+        # TODO: elaborate more efficient strategy of node deletion as, e.g., nullify columns/rows instead of removing
+        self._graph_data.delete(name)
+        return self.__vertex_set._VertexSet__remove_vertex(name)
 
     @abstractmethod
     def add_edge(self, vertex_name1: str, vertex_name2: str):
