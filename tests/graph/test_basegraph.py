@@ -16,7 +16,7 @@ class TestBaseGraph(TestCase):
         self.g.add_edge(verts[0], verts[2], 1)
         self.g.add_edge(verts[0], verts[3], 1)
         self.g.add_edge(verts[1], verts[3], 1)
-        self.g.add_edge(verts[1], verts[4], 1)
+        self.g.add_edge(verts[1], verts[4], 2)
 
     def test_add_vertex(self) -> int:
         self.g.add_vertex("Z")
