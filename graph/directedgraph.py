@@ -1,10 +1,9 @@
-import numpy as np
 from graph.basegraph import BaseGraph
 
 
 class DGraph(BaseGraph):
     def ecount(self):
-        return np.count_nonzero(self._graph_data)
+        return self._graph_data.count_nonzero()
 
     def add_edge(self, source_vertex: str, target_vertex: str, weight=1):
         # TODO: check vertex names existing in graph

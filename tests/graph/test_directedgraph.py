@@ -12,11 +12,11 @@ class TestDGraph(unittest.TestCase):
         self.g.add_vertex("E")
 
         verts = self.g.V.get_names()
-        self.g._graph_data[0, 1] = 1
-        self.g._graph_data[0, 2] = 1
-        self.g._graph_data[0, 3] = 1
-        self.g._graph_data[1, 3] = 1
-        self.g._graph_data[1, 4] = 1
+        self.g.add_edge(verts[0], verts[1], 1)
+        self.g.add_edge(verts[0], verts[2], 1)
+        self.g.add_edge(verts[0], verts[3], 1)
+        self.g.add_edge(verts[1], verts[3], 1)
+        self.g.add_edge(verts[1], verts[4], 1)
 
     def test_ecount(self):
         self.assertEqual(self.g.ecount(), 5)

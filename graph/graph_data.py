@@ -1,6 +1,6 @@
-from abc import ABC, abstractmethod
 import numpy as np
 from typing import Tuple
+from abc import ABC, abstractmethod
 
 
 class IGraphData(ABC):
@@ -13,21 +13,34 @@ class IGraphData(ABC):
         pass
 
     @abstractmethod
+    def elem(self) -> int:
+        pass
+
+    @abstractmethod
     def size(self) -> int:
         pass
 
     @abstractmethod
-    def add(self, name: str):
+    def count_nonzero(self):
         pass
 
     @abstractmethod
-    def delete(self, name: str):
+    def _add(self, name: str):
+        pass
+
+    @abstractmethod
+    def _delete(self, name: str):
         pass
 
 
-class WeightedMatrixData(IGraphData):
-    def __init__(self):
-        self._adjmatrix: np.array = np.zeros((0, 0), dtype=np.float32)
+class GraphMatrix(IGraphData):
+    def __init__(self, weighted: bool = False):
+        if weighted:
+            self._weighted = True
+            self._adjmatrix: np.array = np.zeros((0, 0), dtype=np.float32)
+        else:
+            self._weighted = False
+            self._adjmatrix: np.array = np.zeros((0, 0), dtype=np.bool)
 
     def __getitem__(self, coords: Tuple[int, int]):
         return self._adjmatrix[coords[0], coords[1]]
@@ -35,38 +48,30 @@ class WeightedMatrixData(IGraphData):
     def __setitem__(self, coords: Tuple[int, int], weight):
         self._adjmatrix[coords[0], coords[1]] = weight
 
-    def size(self) -> int:
+    def elem(self) -> int:
         return self._adjmatrix.shape[0]
 
-    def add(self, name: str) -> None:
-        temp_adjmatrix = np.zeros((self.size() + 1, self.size() + 1), dtype=np.float32)
-        self._adjmatrix[:-1, :-1] = temp_adjmatrix
-
-    def delete(self, name: str) -> int:
-        node_idx = self.V.get_index(name)
-        self._adjmatrix = np.delete(self._adjmatrix, node_idx, 0)
-        self._adjmatrix = np.delete(self._adjmatrix, node_idx, 1)
-        return node_idx
-
-
-class UnweightedMatrixData(IGraphData):
-    def __init__(self):
-        self._adjmatrix: np.array = np.zeros((0, 0), dtype=np.bool)
-
-    def __getitem__(self, coords: Tuple[int, int]):
-        return self._adjmatrix[coords[0], coords[1]]
-
-    def __setitem__(self, coords: Tuple[int, int], weight):
-        self._adjmatrix[coords[0], coords[1]] = weight
-
     def size(self) -> int:
-        return self._adjmatrix.shape[0]
+        return self._adjmatrix.size
 
-    def add(self, name: str) -> None:
-        temp_adjmatrix = np.zeros((self.size() + 1, self.size() + 1), dtype=np.bool)
-        self._adjmatrix[:-1, :-1] = temp_adjmatrix
+    def count_nonzero(self) -> int:
+        return np.count_nonzero(self._adjmatrix)
 
-    def delete(self, name: str) -> int:
+    def _add(self, name: str) -> None:
+        if self.elem() == 0:
+            if self._weighted:
+                self._adjmatrix = np.zeros((1, 1), dtype=np.float32)
+            else:
+                self._adjmatrix = np.zeros((1, 1), dtype=np.bool)
+        else:
+            if self._weighted:
+                temp_adjmatrix = np.zeros((self.elem() + 1, self.elem() + 1), dtype=np.float32)
+            else:
+                temp_adjmatrix = np.zeros((self.elem() + 1, self.elem() + 1), dtype=np.bool)
+            temp_adjmatrix[:-1, :-1] = self._adjmatrix
+            self._adjmatrix = temp_adjmatrix
+
+    def _delete(self, name: str) -> int:
         node_idx = self.V.get_index(name)
         self._adjmatrix = np.delete(self._adjmatrix, node_idx, 0)
         self._adjmatrix = np.delete(self._adjmatrix, node_idx, 1)
