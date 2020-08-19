@@ -1,11 +1,11 @@
 __author__ = ["Tommaso Mazza"]
 __copyright__ = u"Copyright 2020, The Pagral Project"
 __credits__ = [u"Ferenc Jordan"]
-__version__ = u"1 beta"
+__version__ = u"0.1.1"
 __maintainer__ = u"Tommaso Mazza"
 __email__ = "bioinformatics@css-mendel.it"
 __status__ = u"Development"
-__date__ = u"12/05/2020"
+__date__ = u"19/08/2020"
 __license__ = u"""
   Copyright (C) 2016-2020  Tommaso Mazza <t.mazza@css-mendel.it>
   Viale Regina Margherita 261, 00198 Rome, Italy
@@ -24,27 +24,27 @@ __license__ = u"""
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
   """
 
-from abc import ABC, abstractmethod
 from typing import Dict, List
+from abc import ABC, abstractmethod
 from graph.vertex_set import VertexSet
-from graph.attribute import Attribute
-from graph.graph_data import IGraphData, GraphMatrix
+from graph.attributes import Attributes
+from graph.graph_data import IGraphData, AdjacencyMatrix
 
-
-def check_names(func):
-    def wrapper(graph_data: IGraphData = None, names: List[str] = None, weighted: bool = False):
-        if (graph_data and names and graph_data.elem() == len(names)) or \
-                (graph_data and not names) or \
-                (not graph_data and not names):
-            func(graph_data, names, weighted)
-        else:
-            raise ValueError("graph_data and names must have the same size")
-
-    return wrapper
+#
+# def check_names(func):
+#     def wrapper(graph_data: IGraphData = None, names: List[str] = None, weighted: bool = False):
+#         if (graph_data and names and graph_data.vcount() == len(names)) or \
+#                 (graph_data and not names) or \
+#                 (not graph_data and not names):
+#             func(graph_data, names, weighted)
+#         else:
+#             raise ValueError("graph_data and names must have the same size")
+#
+#     return wrapper
 
 
 class BaseGraph(ABC):
-    @check_names
+    # @check_names
     def __init__(self, graph_data: IGraphData = None, names: List[str] = None, weighted: bool = False):
         """
         Base graph constructor which initializes:
@@ -58,31 +58,31 @@ class BaseGraph(ABC):
         """
         self._weighted: bool = weighted
 
+        if not names:
+            names: List[str] = [str(i) for i in range(self.vcount())]
+
         # Assign or create the proper internal IGraphData structure
         if graph_data:
             self._graph_data: IGraphData = graph_data
         else:
             if weighted:
-                self._graph_data: IGraphData = GraphMatrix(weighted=True)
+                self._graph_data: IGraphData = AdjacencyMatrix(weighted=True, size=len(names))
             else:
-                self._graph_data: IGraphData = GraphMatrix(weighted=False)
-
-        if not names:
-            names: List[str] = [str(i) for i in range(self.vcount())]
+                self._graph_data: IGraphData = AdjacencyMatrix(weighted=False, size=len(names))
 
         # Collection of vertices of the graph
         self.__vertex_set: VertexSet = VertexSet(names)
 
         # Global attributes of the graph
-        self.__graph_attrs: Dict[str, Attribute] = {}
+        self.__graph_attrs: Dict[str, Attributes] = {}
 
-    def __getitem__(self, attr_name: str) -> Attribute:
+    def __getitem__(self, attr_name: str) -> Attributes:
         if isinstance(attr_name, str):
             return self.__graph_attrs[attr_name]
         else:
             raise TypeError('Index must be str, not {}'.format(type(attr_name).__name__))
 
-    def __setitem__(self, attr_name: str, attr_value: Attribute):
+    def __setitem__(self, attr_name: str, attr_value: Attributes):
         if isinstance(attr_name, str):
             self.__graph_attrs[attr_name] = attr_value
         else:
@@ -116,7 +116,7 @@ class BaseGraph(ABC):
         self._graph_data = graph_data
 
     def vcount(self) -> int:
-        return self._graph_data.elem()
+        return self._graph_data.vcount()
 
     @abstractmethod
     def ecount(self) -> int:
@@ -143,7 +143,7 @@ class BaseGraph(ABC):
         :return: The index of the deleted vertex
         """
         # TODO: elaborate more efficient strategy of node deletion as, e.g., nullify columns/rows instead of removing
-        self._graph_data._delete(name)
+        self._graph_data._remove(name)
         return self.__vertex_set._VertexSet__remove_vertex(name)
 
     @abstractmethod

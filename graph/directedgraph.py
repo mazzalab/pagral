@@ -3,7 +3,7 @@ from graph.basegraph import BaseGraph
 
 class DGraph(BaseGraph):
     def ecount(self):
-        return self._graph_data.count_nonzero()
+        return self._graph_data.ecount()
 
     def add_edge(self, source_vertex: str, target_vertex: str, weight=1):
         # TODO: check vertex names existing in graph

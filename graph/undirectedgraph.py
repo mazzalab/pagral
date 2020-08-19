@@ -4,7 +4,7 @@ from graph.basegraph import BaseGraph
 
 class UGraph(BaseGraph):
     def ecount(self):
-        return self._graph_data.count_nonzero() / 2
+        return self._graph_data.ecount() / 2
 
     def add_edge(self, vertex1: str, vertex2: str, weight=1):
         # TODO: check vertex names existing in graph

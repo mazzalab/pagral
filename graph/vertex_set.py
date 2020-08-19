@@ -1,6 +1,6 @@
 import numpy as np
 from typing import List, Dict
-from graph.attribute import Attribute
+from graph.attributes import Attributes
 
 
 class VertexSet:
@@ -9,38 +9,38 @@ class VertexSet:
         self.__idx: np.array = np.array(names)
         # {name -> index}
         self.__names: Dict[str, int] = {k: v for v, k in enumerate(names)}
-        # {index -> attrs }
-        self.__vertex_attrs: Dict[int, Attribute] = dict.fromkeys(range(len(names)), Attribute())
+        # {index -> attrs}
+        self.__vertex_attrs: Dict[int, Attributes] = dict.fromkeys(range(len(names)), Attributes())
 
-    def __getitem__(self, attr_key) -> Attribute:
+    def __getitem__(self, node) -> Attributes:
         """
         Get vertex :class:`Attribute` by vertex id or name
-        :param attr_key: Id or name of a selected vertex
+        :param node: Id or name of a selected vertex
         :return: The :class:`Attribute` of a selected vertex
         :raises KeyError: if the vertex id or name doesn't exist
-        :raises TypeError: if ``attr_key`` is not of type int (vertex id) or str (vertex name)
+        :raises TypeError: if ``node`` is not of type int (vertex id) or str (vertex name)
         """
-        if isinstance(attr_key, int):
-            return self.__vertex_attrs[attr_key]
-        elif isinstance(attr_key, str):
-            return self.__vertex_attrs[self.__names[attr_key]]
+        if isinstance(node, int):
+            return self.__vertex_attrs[node]
+        elif isinstance(node, str):
+            return self.__vertex_attrs[self.__names[node]]
         else:
-            raise TypeError('`attr_key` argument must be of type int or str, not {}'.format(type(attr_key).__name__))
+            raise TypeError('The `node` argument must be of type int or str, not {}'.format(type(node).__name__))
 
-    def __setitem__(self, attr_key, attr_value: Attribute):
+    def __setitem__(self, node, attributes: Attributes):
         """
         Set vertex :class:`Attribute` by vertex id or name
-        :param attr_key: Id or name of a selected vertex
-        :param attr_value: :class:`Attribute` to be set to the specified vertex
-        :raises KeyError: if the vertex id or name doesn't exist
-        :raises TypeError: if `attr_key` is not of type int (vertex id) or str (vertex name)
+        :param node: Id or name of a selected vertex
+        :param attributes: :class:`Attribute` to be set to the specified vertex
+        :raises KeyError: if the vertex id or name do not exist
+        :raises TypeError: if `node` is not of type int (vertex id) or str (vertex name)
         """
-        if isinstance(attr_key, int):
-            self.__vertex_attrs[attr_key] = attr_value
-        elif isinstance(attr_key, str):
-            self.__vertex_attrs[self.__names[attr_key]] = attr_value
+        if isinstance(node, int):
+            self.__vertex_attrs[node] = attributes
+        elif isinstance(node, str):
+            self.__vertex_attrs[self.__names[node]] = attributes
         else:
-            raise TypeError('`attr_key` argument must be of type int or str, not {}'.format(type(attr_key).__name__))
+            raise TypeError('The `node` argument must be of type int or str, not {}'.format(type(node).__name__))
 
     def get_names(self) -> List[str]:
         return list(self.__names.keys())
@@ -54,7 +54,7 @@ class VertexSet:
     def __insert_vertex(self, name: str):
         self.__idx = np.append(self.__idx, name)
         self.__names[name] = self.__idx.size - 1
-        self.__vertex_attrs[self.__idx.size - 1] = Attribute()
+        self.__vertex_attrs[self.__idx.size - 1] = Attributes()
 
     def __remove_vertex(self, name: str):
         del_idx = self.__names[name]
@@ -62,3 +62,5 @@ class VertexSet:
         del self.__names[name]
         del self.__vertex_attrs[del_idx]
         del self.__idx[del_idx]
+
+        #TODO: Need to update all indices, by rescaling them
