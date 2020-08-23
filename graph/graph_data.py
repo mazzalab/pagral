@@ -60,6 +60,7 @@ class AdjacencyMatrix(IGraphData):
         self._adjmatrix = temp_adjmatrix
 
     def _remove(self, idx: List[int]) -> None:
+        # TOdO: SORT IDX AND REMOVE FROM BIGGER TO SMALLER
         for i in idx:
             self._adjmatrix = np.delete(self._adjmatrix, i, 0)
             self._adjmatrix = np.delete(self._adjmatrix, i, 1)
