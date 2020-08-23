@@ -28,7 +28,8 @@ from typing import Dict, List
 from abc import ABC, abstractmethod
 from graph.vertex_set import VertexSet
 from graph.attributes import Attributes
-from graph.graph_data import IGraphData, AdjacencyMatrix
+from graph.graph_data import AdjacencyMatrixC
+
 
 #
 # def check_names(func):
@@ -45,7 +46,7 @@ from graph.graph_data import IGraphData, AdjacencyMatrix
 
 class BaseGraph(ABC):
     # @check_names
-    def __init__(self, graph_data: IGraphData = None, names: List[str] = None, weighted: bool = False):
+    def __init__(self, graph_data: AdjacencyMatrixC = None, names: List[str] = None, weighted: bool = False):
         """
         Base graph constructor which initializes:
         - _weighted boolean variable to account for weighted edges
@@ -58,17 +59,19 @@ class BaseGraph(ABC):
         """
         self._weighted: bool = weighted
 
+        c = AdjacencyMatrixC()
+
         if not names:
             names: List[str] = [str(i) for i in range(self.vcount())]
 
         # Assign or create the proper internal IGraphData structure
         if graph_data:
-            self._graph_data: IGraphData = graph_data
+            self._graph_data: AdjacencyMatrixC = graph_data
         else:
             if weighted:
-                self._graph_data: IGraphData = AdjacencyMatrix(weighted=True, size=len(names))
+                self._graph_data: AdjacencyMatrixC = AdjacencyMatrixC(weighted=True, size=len(names))
             else:
-                self._graph_data: IGraphData = AdjacencyMatrix(weighted=False, size=len(names))
+                self._graph_data: AdjacencyMatrixC = AdjacencyMatrixC(weighted=False, size=len(names))
 
         # Collection of vertices of the graph
         self.__vertex_set: VertexSet = VertexSet(names)
@@ -112,7 +115,7 @@ class BaseGraph(ABC):
         return self._graph_data
 
     @graph_data.setter
-    def graph_data(self, graph_data: IGraphData):
+    def graph_data(self, graph_data: AdjacencyMatrixC):
         self._graph_data = graph_data
 
     def vcount(self) -> int:
