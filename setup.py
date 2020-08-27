@@ -4,7 +4,7 @@ from setuptools import setup, find_packages, Extension
 from Cython.Build import cythonize
 
 #####################################
-VERSION = "1.0"
+VERSION = "1.0.{build}"
 ISRELEASED = False
 __version__ = VERSION
 #####################################
