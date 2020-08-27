@@ -1,4 +1,4 @@
-os: windows
+# os: windows
 # image: Visual Studio 2019
 
 environment:
@@ -25,8 +25,7 @@ install:
   - "python -m pip install --upgrade pip"
   - "pip install wheel setuptools Cython"
 
-build:
-  - off
+build: off
 
 build_script:
   # Build the Cython extension
