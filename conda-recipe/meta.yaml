@@ -1,0 +1,55 @@
+package:
+  name: pyntacle
+  version: "1.3"
+
+source:
+  path: Z:\tom\pyntacle_release\windows_release\pyntacle_release
+
+build:
+  number: 0
+  entry_points:
+    - pyntacle = pyntacle.pyntacle:App
+ 
+requirements:
+  host:
+    - python ==3.7
+    - pip
+    - setuptools
+    - numpy
+    - colorama
+    
+  build:
+    - pip
+    - python ==3.7
+    - distlib
+    - setuptools
+    - numpy
+    - colorama
+    
+  run:
+    - python ==3.7
+    - pip
+    - setuptools
+    - numpy
+    - pandas
+    - numba
+    - seaborn
+    - colorama
+    - psutil
+    - libiconv
+    - ordered-set
+    - xlsxwriter
+    - cudatoolkit ==9.0
+    - python-igraph
+
+test:
+  imports:
+    - pyntacle
+  commands:
+    - pyntacle -h
+    
+about:
+  home: https://github.com/mazzalab/pyntacle
+  summary: A Python software package for network analysis based on non canonical metrics and HPC comupting
+  license: GPL3
+  license_file: LICENSE.txt

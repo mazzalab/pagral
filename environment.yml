@@ -1,4 +1,4 @@
-name: pagral
+name: pagral_project
 channels:
   - defaults
 dependencies:
@@ -6,5 +6,3 @@ dependencies:
   - cython
   - python=3.7
   - sphinx
-prefix: C:\Users\t.mazza\.conda\envs\pagral
-
