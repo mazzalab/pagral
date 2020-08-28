@@ -10,7 +10,6 @@ branches:
 image: Visual Studio 2019
 
 environment:
-  APPVEYOR_RDP_PASSWORD: AgattaPowel1979#
   PYTHON_VERSION: 3.7
 
   # global:
@@ -33,8 +32,9 @@ install:
   - cmd: conda config --set always_yes yes --set changeps1 no
   - cmd: conda update -q conda
   - cmd: conda info -a
-  - cmd: conda config --add channels conda-forge
-  - cmd: conda install -c conda-forge setuptools wheel conda-build anaconda-client conda-verify cython numpy -y
+  - cmd: conda config --add channels conda-forge anaconda
+  - cmd: conda install -c conda-forge setuptools wheel conda-build anaconda-client conda-verify cython -y
+  - cmd: conda install -c anaconda numpy -y
 #  - cmd: conda create -q -n pagral python=%PYTHON_VERSION% Cython numpy conda-build anaconda-client conda-verify
 #  - conda activate pagral
 #  - pip install ggplot
