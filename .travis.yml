@@ -57,6 +57,7 @@ artifacts:
 #
 
 on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   # Upload test results to AppVeyor
   #  - ps: |
   #    # this uploads nosetests.xml produced in test_script step
