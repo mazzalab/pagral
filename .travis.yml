@@ -33,7 +33,8 @@ build: off
 
 build_script:
   # Build the Cython extension
-  - python setup.py build_ext --inplace
+  - cmd: ECHO test text here!
+  - cmd: python setup.py build_ext --inplace
 
 test_script:
   # Run the project tests and store results in .xml log
