@@ -32,7 +32,8 @@ install:
   - cmd: conda config --set always_yes yes --set changeps1 no
   - cmd: conda update -q conda
   - cmd: conda info -a
-  - cmd: conda config --add channels conda-forge anaconda
+  - cmd: conda config --add channels conda-forge
+  - cmd: conda config --add channels anaconda
   - cmd: conda install -c conda-forge setuptools wheel conda-build anaconda-client conda-verify cython -y
   - cmd: conda install -c anaconda numpy -y
 #  - cmd: conda create -q -n pagral python=%PYTHON_VERSION% Cython numpy conda-build anaconda-client conda-verify
