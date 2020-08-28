@@ -18,21 +18,34 @@ environment:
     # CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
 
   matrix:
-    - PYTHON: "C:\\Python37-x64"
-      PYTHON_VERSION: "3.7.8"
-      PYTHON_ARCH: "64"
+    - PYTHON_VERSION: 3.7
+    - MINICONDA: C:\Miniconda3
+#    - PYTHON: "C:\\Python37-x64"
+#      PYTHON_VERSION: "3.7.8"
+#      PYTHON_ARCH: "64"
 
-# init:
+init:
+  -  cmd: ECHO %PYTHON_VERSION% %MINICONDA%
 #   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 install:
-  - cmd: SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
-  - cmd: python --version
+  - cmd: set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%PATH%
+  - cmd: conda config --set always_yes yes --set changeps1 no
+  - cmd: conda update -q conda
+  - cmd: conda info -a
+  - cmd: conda config --add channels conda-forge
+  - cmd: conda install -c conda-forge setuptools wheel conda-build anaconda-client conda-verify cython numpy -y
+#  - cmd: conda create -q -n pagral python=%PYTHON_VERSION% Cython numpy conda-build anaconda-client conda-verify
+#  - conda activate pagral
+#  - pip install ggplot
 
-  # Upgrade to the latest version of pip to avoid it displaying warnings
-  # about it being out of date.
-  - cmd: python -m pip install --upgrade pip
-  - cmd: pip install wheel setuptools Cython numpy
+#  - cmd: SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
+#  - cmd: python --version
+#
+#  # Upgrade to the latest version of pip to avoid it displaying warnings
+#  # about it being out of date.
+#  - cmd: python -m pip install --upgrade pip
+#  - cmd: pip install wheel setuptools Cython numpy
 
 build: off
 
@@ -41,7 +54,7 @@ build_script:
   - cmd: ECHO test text here!
   - cmd: python setup.py build_ext --inplace
 
-test_script:
+# test_script:
   # Run the project tests and store results in .xml log
   #  - ps: |
   #      # this produces nosetests.xml which is uploaded on_finish

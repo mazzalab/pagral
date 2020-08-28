@@ -56,6 +56,5 @@ setup(
     install_requires=[
         "numpy",
         "cython",
-        "sphinx",
     ],
 )
