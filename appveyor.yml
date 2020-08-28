@@ -26,16 +26,13 @@ environment:
 #   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 install:
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-
-  # Check that we have the expected version and architecture for Python
+  - cmd: SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
   - cmd: python --version
-  - cmd: python -c \"import struct; print(struct.calcsize('P') * 8)\"
 
   # Upgrade to the latest version of pip to avoid it displaying warnings
   # about it being out of date.
   - cmd: python -m pip install --upgrade pip
-  - cmd: pip install wheel setuptools Cython
+  - cmd: pip install wheel setuptools Cython numpy
 
 build: off
 
@@ -53,7 +50,7 @@ test_script:
 
 after_test:
   # If tests are successful, create binary packages for the project.
-  - "python setup.py bdist_wheel"
+  - cmd: python setup.py bdist_wheel
   # - "python setup.py bdist_wininst"
   # - "python setup.py bdist_msi"
   # - ps: "ls dist"

@@ -1,7 +1,7 @@
 import sys
-import os
 from setuptools import setup, find_packages, Extension
 from Cython.Build import cythonize
+import numpy
 
 #####################################
 VERSION = "1.0.{build}"
@@ -26,16 +26,10 @@ if util.find_spec("setuptools") is None:
 if sys.version_info <= (3, 7):
     sys.exit('Sorry, Python < 3.7 is not supported.')
 
-if os.environ['CONDA_BUILD']:
-    with open('__conda_version__.txt', 'w') as f:
-        if ISRELEASED:
-            f.write(VERSION)
-        else:
-            f.write(VERSION + '.dev')
-
 extension_module = Extension(
     'pagral.graph.graph_data',
-    sources=["./pagral/graph/graph_data.pyx"]
+    sources=["./pagral/graph/graph_data.pyx"],
+    include_dirs=[numpy.get_include()]
 )
 
 setup(
