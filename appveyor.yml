@@ -9,8 +9,8 @@ branches:
 
 image: Visual Studio 2019
 
-platform:
-    - x64
+#platform:
+#    - x64
 
 environment:
   PYTHON_VERSION: 3.7
@@ -22,9 +22,9 @@ environment:
     # CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
 
   matrix:
-    - MINICONDA: "C:\\Miniconda37-x64"
+    - MINICONDA: "C:\\Miniconda37"
       PYTHON_VERSION: "3.7.4"
-      PYTHON_ARCH: "64"
+      # PYTHON_ARCH: "64"
 
 init:
   -  cmd: ECHO %PYTHON_VERSION% %MINICONDA%
