@@ -3,7 +3,7 @@ package:
   version: "1.0"
 
 source:
-  path: C:\Users\t.mazza\Desktop\CSS-Bioinformatics\pagral_project
+  path: C:\projects\pagral
 
 build:
   number: 0
@@ -30,7 +30,6 @@ requirements:
     - setuptools
     - numpy
     - cython
-    - sphinx
 
 test:
   imports:
