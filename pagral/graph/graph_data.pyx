@@ -1,3 +1,5 @@
+# distutils: language=3
+
 import numpy as np
 cimport numpy as np
 import cython

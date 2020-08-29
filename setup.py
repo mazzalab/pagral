@@ -4,7 +4,7 @@ from Cython.Build import cythonize
 import numpy
 
 #####################################
-VERSION = "1.0.{build}"
+VERSION = "1.0"
 ISRELEASED = False
 __version__ = VERSION
 #####################################
@@ -44,7 +44,7 @@ setup(
     # packages=['pyappveyordemo', 'pyappveyordemo.tests'],
     include_package_data=True,
 
-    ext_modules=cythonize([extension_module], language=3),
+    ext_modules=cythonize([extension_module]),
     zip_safe=False,
     license='GPL3',
     # entry_points={
@@ -54,7 +54,7 @@ setup(
     # },
     # setup_requires=['numpy'],
     install_requires=[
-        "numpy",
+        "numpy=1.19",
         "cython",
     ],
 )
