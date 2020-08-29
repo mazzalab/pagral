@@ -14,6 +14,7 @@ image: Visual Studio 2019
 
 environment:
   PYTHON_VERSION: 3.7
+  WINKITS: "C:\\Program Files (x86)\\Windows Kits\\8.0\\bin\\x86"
 
   # global:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
@@ -31,7 +32,7 @@ init:
 #   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 install:
-  - cmd: set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%PATH%
+  - cmd: set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%WINKITS%;%PATH%
   - cmd: activate.bat
   - cmd: set PYTHONUNBUFFERED=1
 
@@ -42,7 +43,7 @@ install:
   - cmd: conda config --add channels conda-forge
   - cmd: conda config --add channels anaconda
   - cmd: conda install -c conda-forge setuptools wheel conda-build anaconda-client conda-verify cython --yes --quiet
-  - cmd: conda install -c anaconda numpy --yes --quiet
+  - cmd: conda install -c anaconda numpy=1.19.1 --yes --quiet
 #  - cmd: conda create -q -n pagral python=%PYTHON_VERSION% Cython numpy conda-build anaconda-client conda-verify
 #  - conda activate pagral
 #  - pip install numpy
@@ -72,7 +73,7 @@ build_script:
 after_test:
   # If tests are successful, create binary packages for the project.
   - cmd: python setup.py bdist_wheel clean --all
-  - cmd: conda build conda-recipe --quiet
+  - cmd: conda build --quiet -c conda-forge conda-recipe
   # - "python setup.py bdist_wininst"
   # - "python setup.py bdist_msi"
   - ps: "ls dist"

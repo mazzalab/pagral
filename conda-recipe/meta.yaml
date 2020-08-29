@@ -12,23 +12,24 @@ build:
  
 requirements:
   host:
-    - numpy=1.19
+    - numpy==1.19.1
     - cython
-    - python=3.7
+    - python==3.7
 
   build:
+    - {{ compiler('c') }}
     - pip
     - python ==3.7
     - distlib
     - setuptools
-    - numpy=1.19
+    - numpy==1.19.1
     - cython
 
   run:
     - python ==3.7
     - pip
     - setuptools
-    - numpy=1.19
+    - numpy==1.19.1
     - cython
 
 test:
