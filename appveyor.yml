@@ -29,17 +29,16 @@ init:
 
 install:
   - cmd: set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%PATH%
-  - cmd: activate.bat
   - cmd: conda config --set always_yes yes --set changeps1 no
   - cmd: conda update -q conda
   - cmd: conda info -a
   - cmd: conda config --add channels conda-forge
-  - cmd: conda config --add channels anaconda
+#  - cmd: conda config --add channels anaconda
   - cmd: conda install -c conda-forge setuptools wheel conda-build anaconda-client conda-verify cython -y
-  - cmd: conda install -c anaconda numpy -y
+#  - cmd: conda install -c anaconda numpy -y
 #  - cmd: conda create -q -n pagral python=%PYTHON_VERSION% Cython numpy conda-build anaconda-client conda-verify
 #  - conda activate pagral
-#  - pip install ggplot
+  - pip install numpy
 
 #  - cmd: SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
 #  - cmd: python --version
