@@ -54,7 +54,7 @@ setup(
     # },
     # setup_requires=['numpy'],
     install_requires=[
-        "numpy=1.19",
+        "numpy==1.19.1",
         "cython",
     ],
 )
