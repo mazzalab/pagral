@@ -44,7 +44,7 @@ setup(
     # packages=['pyappveyordemo', 'pyappveyordemo.tests'],
     include_package_data=True,
 
-    ext_modules=cythonize([extension_module]),
+    ext_modules=cythonize([extension_module], language=3),
     zip_safe=False,
     license='GPL3',
     # entry_points={

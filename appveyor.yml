@@ -9,6 +9,9 @@ branches:
 
 image: Visual Studio 2019
 
+platform:
+    - x64
+
 environment:
   PYTHON_VERSION: 3.7
 
@@ -30,13 +33,16 @@ init:
 install:
   - cmd: set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%PATH%
   - cmd: activate.bat
+  - cmd: set PYTHONUNBUFFERED=1
+
   - cmd: conda config --set always_yes yes --set changeps1 no
   - cmd: conda update -q conda
-  - cmd: conda info -a
+  # - cmd: conda info -a
+  - cmd: conda config --set show_channel_urls true
   - cmd: conda config --add channels conda-forge
   - cmd: conda config --add channels anaconda
-  - cmd: conda install -c conda-forge setuptools wheel conda-build anaconda-client conda-verify cython -y
-  - cmd: conda install -c anaconda numpy -y
+  - cmd: conda install -c conda-forge setuptools wheel conda-build anaconda-client conda-verify cython --yes --quiet
+  - cmd: conda install -c anaconda numpy --yes --quiet
 #  - cmd: conda create -q -n pagral python=%PYTHON_VERSION% Cython numpy conda-build anaconda-client conda-verify
 #  - conda activate pagral
 #  - pip install numpy
@@ -65,10 +71,11 @@ build_script:
 
 after_test:
   # If tests are successful, create binary packages for the project.
-  - cmd: python setup.py bdist_wheel
+  - cmd: python setup.py bdist_wheel clean --all
+  - cmd: conda build conda-recipe --quiet
   # - "python setup.py bdist_wininst"
   # - "python setup.py bdist_msi"
-  # - ps: "ls dist"
+  - ps: "ls dist"
 
 # artifacts:
   # Archive the generated packages in the ci.appveyor.com build report.
@@ -78,8 +85,8 @@ after_test:
 #  - TODO: upload the content of dist/*.whl to a public wheelhouse
 #
 
-# on_finish:
-  # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   # Upload test results to AppVeyor
   #  - ps: |
   #    # this uploads nosetests.xml produced in test_script step
