@@ -19,9 +19,9 @@ environment:
     # CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
 
   matrix:
-    - MINICONDA: "C:\\Miniconda37-x64"
+    - MINICONDA: "C:\\Miniconda37"
       PYTHON_VERSION: "3.7.4"
-      PYTHON_ARCH: "64"
+      # PYTHON_ARCH: "64"
 
 init:
   -  cmd: ECHO %PYTHON_VERSION% %MINICONDA%
@@ -69,16 +69,16 @@ after_test:
   # - "python setup.py bdist_msi"
   # - ps: "ls dist"
 
-artifacts:
+# artifacts:
   # Archive the generated packages in the ci.appveyor.com build report.
-  - path: dist\*
+  # - path: dist\*
 
 #on_success:
 #  - TODO: upload the content of dist/*.whl to a public wheelhouse
 #
 
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# on_finish:
+  # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   # Upload test results to AppVeyor
   #  - ps: |
   #    # this uploads nosetests.xml produced in test_script step
