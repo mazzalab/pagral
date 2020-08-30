@@ -38,13 +38,12 @@ extension_module = Extension(
     'pagral.graph.graph_data',
     sources=["./pagral/graph/graph_data"+ext],
     include_dirs=[numpy.get_include()],
-    language='c++',
     define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")],
 )
 
 if USE_CYTHON:
     from Cython.Build import cythonize
-    extension_module = cythonize(extension_module)
+    extension_module = cythonize([extension_module])
 
 
 setup(
@@ -59,7 +58,7 @@ setup(
     # packages=['pyappveyordemo', 'pyappveyordemo.tests'],
     include_package_data=True,
 
-    ext_modules=[extension_module],
+    ext_modules=extension_module,
     zip_safe=False,
     license='GPL3',
     # entry_points={
