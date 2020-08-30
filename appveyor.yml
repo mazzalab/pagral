@@ -60,10 +60,11 @@ build: off
 
 build_script:
   # Build the Cython extension
-  - cmd: ECHO test text here!
-  - cmd: python setup.py build_ext --inplace
+  - cmd: build_script here!
+  # - cmd: python setup.py build_ext --inplace
 
-# test_script:
+test_script:
+  - cmd: tests here!
   # Run the project tests and store results in .xml log
   #  - ps: |
   #      # this produces nosetests.xml which is uploaded on_finish
@@ -72,8 +73,9 @@ build_script:
 
 after_test:
   # If tests are successful, create binary packages for the project.
-  - cmd: python setup.py bdist_wheel clean --all
+  # - cmd: python setup.py bdist_wheel clean --all
   - cmd: conda build --quiet -c conda-forge conda-recipe
+  - cmd: conda convert -f --platform all dist\*.tar.bz2 -o outputdir\
   # - "python setup.py bdist_wininst"
   # - "python setup.py bdist_msi"
   - ps: "ls dist"

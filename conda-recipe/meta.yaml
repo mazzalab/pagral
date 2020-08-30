@@ -33,10 +33,10 @@ requirements:
 
   run:
     - python ==3.7
-    - pip
-    - setuptools
+#    - pip
+#    - setuptools
     - numpy==1.19.1
-    - cython
+#    - cython
 
 test:
   imports:

@@ -1,13 +1,13 @@
 import sys
 from setuptools import setup, find_packages, Extension
-from Cython.Build import cythonize
+
 import numpy
 
-#####################################
+########################
 VERSION = "0.1"
 ISRELEASED = False
 __version__ = VERSION
-#####################################
+########################
 
 try:
     from importlib import util
@@ -26,11 +26,25 @@ if util.find_spec("setuptools") is None:
 if sys.version_info <= (3, 7):
     sys.exit('Sorry, Python < 3.7 is not supported.')
 
+if '--use-cython' in sys.argv:
+    USE_CYTHON=True
+    sys.argv.remove('--use-cython')
+else:
+    USE_CYTHON = False
+ext = '.pyx' if USE_CYTHON else '.c++'
+
 extension_module = Extension(
     'pagral.graph.graph_data',
-    sources=["./pagral/graph/graph_data.pyx"],
-    include_dirs=[numpy.get_include()]
+    sources=["./pagral/graph/graph_data"+ext],
+    include_dirs=[numpy.get_include()],
+    language='c++',
+    define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")],
 )
+
+if USE_CYTHON:
+    from Cython.Build import cythonize
+    extension_module = cythonize(extension_module)
+
 
 setup(
     name='pagral',
@@ -44,7 +58,7 @@ setup(
     # packages=['pyappveyordemo', 'pyappveyordemo.tests'],
     include_package_data=True,
 
-    ext_modules=cythonize([extension_module]),
+    ext_modules=[extension_module],
     zip_safe=False,
     license='GPL3',
     # entry_points={
