@@ -1,1 +1,2 @@
 exclude conda-recipe
+include docs

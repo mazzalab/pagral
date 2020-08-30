@@ -4,7 +4,7 @@ from Cython.Build import cythonize
 import numpy
 
 #####################################
-VERSION = "1.0"
+VERSION = "0.1"
 ISRELEASED = False
 __version__ = VERSION
 #####################################
