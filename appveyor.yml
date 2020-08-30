@@ -60,11 +60,11 @@ build: off
 
 build_script:
   # Build the Cython extension
-  - cmd: build_script here!
+  - cmd: ECHO build_script here!
   # - cmd: python setup.py build_ext --inplace
 
 test_script:
-  - cmd: tests here!
+  - cmd: ECHO tests here!
   # Run the project tests and store results in .xml log
   #  - ps: |
   #      # this produces nosetests.xml which is uploaded on_finish
