@@ -26,11 +26,12 @@ if util.find_spec("setuptools") is None:
 if sys.version_info <= (3, 7):
     sys.exit('Sorry, Python < 3.7 is not supported.')
 
-if '--use-cython' in sys.argv:
-    USE_CYTHON=True
-    sys.argv.remove('--use-cython')
-else:
+try:
+    from Cython.Distutils import build_ext
+except ImportError:
     USE_CYTHON = False
+else:
+    USE_CYTHON = True
 ext = '.pyx' if USE_CYTHON else '.c++'
 
 extension_module = Extension(
