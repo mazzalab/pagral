@@ -44,9 +44,8 @@ extension_module = Extension(
 if USE_CYTHON:
     from Cython.Build import cythonize
     extension_module = cythonize([extension_module],
-                                 compiler_directives={'language_level': "3", 'language': 'c++'},
+                                 compiler_directives={'language_level': "3"},
                                  annotate=True)
-
 
 setup(
     name='pagral',
