@@ -15,9 +15,6 @@ image:
 #  - Ubuntu
 #  - macOS
 
-#platform:
-#    - x64
-
 environment:
   PYTHON_VERSION: 3.7
   WINKITS: "C:\\Program Files (x86)\\Windows Kits\\8.0\\bin\\x86"
@@ -74,8 +71,6 @@ after_test:
   - cmd: python setup.py bdist_wheel -d pypi_dist clean --all
   - ps: "ls pypi_dist"
   - cmd: conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
-  # - "python setup.py bdist_wininst"
-  # - "python setup.py bdist_msi"
   - ps: "ls conda_dist"
 
 artifacts:
