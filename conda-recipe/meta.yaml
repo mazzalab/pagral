@@ -2,7 +2,7 @@
 
 package:
   name: pagral
-  version: {{ data.get('__version__') }}
+  version: {{ data.get('version') }}
 
 #app:
 #  icon: icon_64x64.png
@@ -12,7 +12,7 @@ source:
   # path: C:\projects\pagral
 
 build:
-  number: 1.0
+  number: version
 #  entry_points:
 #    - pyntacle = pyntacle.pyntacle:App
  
