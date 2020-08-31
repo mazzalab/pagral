@@ -68,7 +68,7 @@ test_script:
 
 after_test:
   # If tests are successful, create binary packages for the project.
-  - cmd: python setup.py bdist_wheel clean --all --bdist-dir pypi_dist
+  - cmd: python setup.py bdist_wheel --b pypi_dist clean --all
   - ps: "ls dist"
   - cmd: conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
   # - "python setup.py bdist_wininst"
