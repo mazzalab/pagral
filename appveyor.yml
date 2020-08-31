@@ -74,17 +74,14 @@ test_script:
 after_test:
   # If tests are successful, create binary packages for the project.
   # - cmd: python setup.py bdist_wheel clean --all
-  - cmd: mkdir conda_dist
   - cmd: conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
-  - cmd: ECHO %PKG_BUILD_STRING%
-  - cmd: conda convert -f --platform all conda_dist\win-32\pagral-*.tar.bz2 -o conda_dist\
   # - "python setup.py bdist_wininst"
   # - "python setup.py bdist_msi"
   - ps: "ls dist"
 
-# artifacts:
+artifacts:
   # Archive the generated packages in the ci.appveyor.com build report.
-  # - path: dist\*
+  - path: conda_dist\win-32\*.tar.bz2
 
 #on_success:
 #  - TODO: upload the content of dist/*.whl to a public wheelhouse
