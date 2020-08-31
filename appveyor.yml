@@ -31,7 +31,10 @@ environment:
   matrix:
     - MINICONDA: "C:\\Miniconda37"
       PYTHON_VERSION: "3.7.4"
-      # PYTHON_ARCH: "64"
+      PYTHON_ARCH: "32"
+    - MINICONDA: "C:\Miniconda37-x64"
+      PYTHON_VERSION: "3.7.4"
+      PYTHON_ARCH: "64"
 
 init:
   -  cmd: ECHO %PYTHON_VERSION% %MINICONDA%
@@ -68,8 +71,8 @@ test_script:
 
 after_test:
   # If tests are successful, create binary packages for the project.
-  - cmd: python setup.py bdist_wheel -b pypi_dist clean --all
-  - ps: "ls dist"
+  - cmd: python setup.py bdist_wheel -d pypi_dist clean --all
+  - ps: "ls pypi_dist"
   - cmd: conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
   # - "python setup.py bdist_wininst"
   # - "python setup.py bdist_msi"
