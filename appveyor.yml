@@ -78,7 +78,7 @@ after_test:
 artifacts:
   # Archive the generated packages in the ci.appveyor.com build report.
   - path: conda_dist\win-32\*.tar.bz2
-  - path: dist\*.whl
+  - path: pypi_dist\*.whl
 
 #on_success:
 #  - TODO: upload the content of dist/*.whl to a public wheelhouse
