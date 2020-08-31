@@ -7,7 +7,13 @@ branches:
   only:
     - master
 
-image: Visual Studio 2019
+only_commits:
+  message: /\[build\]/
+
+image:
+  - Visual Studio 2019
+#  - Ubuntu
+#  - macOS
 
 #platform:
 #    - x64
@@ -44,17 +50,6 @@ install:
   - cmd: conda config --add channels anaconda
   - cmd: conda install -c conda-forge setuptools wheel conda-build anaconda-client conda-verify cython --yes --quiet
   - cmd: conda install -c anaconda numpy=1.19.1 --yes --quiet
-#  - cmd: conda create -q -n pagral python=%PYTHON_VERSION% Cython numpy conda-build anaconda-client conda-verify
-#  - conda activate pagral
-#  - pip install numpy
-
-#  - cmd: SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
-#  - cmd: python --version
-#
-#  # Upgrade to the latest version of pip to avoid it displaying warnings
-#  # about it being out of date.
-#  - cmd: python -m pip install --upgrade pip
-#  - cmd: pip install wheel setuptools Cython numpy
 
 build: off
 
@@ -73,7 +68,8 @@ test_script:
 
 after_test:
   # If tests are successful, create binary packages for the project.
-  # - cmd: python setup.py bdist_wheel clean --all
+  - cmd: python setup.py bdist_wheel clean --all --dist-dir pypi_dist
+  - ps: "ls dist"
   - cmd: conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
   # - "python setup.py bdist_wininst"
   # - "python setup.py bdist_msi"
@@ -82,6 +78,7 @@ after_test:
 artifacts:
   # Archive the generated packages in the ci.appveyor.com build report.
   - path: conda_dist\win-32\*.tar.bz2
+  - path: dist\*.whl
 
 #on_success:
 #  - TODO: upload the content of dist/*.whl to a public wheelhouse
