@@ -32,7 +32,7 @@ environment:
     - MINICONDA: "C:\\Miniconda37"
       PYTHON_VERSION: "3.7.4"
       PYTHON_ARCH: "32"
-    - MINICONDA: "C:\Miniconda37-x64"
+    - MINICONDA: "C:\\Miniconda37-x64"
       PYTHON_VERSION: "3.7.4"
       PYTHON_ARCH: "64"
 
