@@ -1,6 +1,6 @@
 import numpy as np
 from typing import List, Dict
-from graph.attributes import Attributes
+from pagral.graph.attributes import Attributes
 
 
 class VertexSet:

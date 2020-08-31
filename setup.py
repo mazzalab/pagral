@@ -32,7 +32,7 @@ except ImportError:
     USE_CYTHON = False
 else:
     USE_CYTHON = True
-ext = '.pyx' if USE_CYTHON else '.c++'
+ext = '.pyx' if USE_CYTHON else '.cpp'
 
 extension_module = Extension(
     'pagral.graph.graph_data',
@@ -43,7 +43,9 @@ extension_module = Extension(
 
 if USE_CYTHON:
     from Cython.Build import cythonize
-    extension_module = cythonize([extension_module])
+    extension_module = cythonize([extension_module],
+                                 compiler_directives={'language_level': "3", 'language': 'c++'},
+                                 annotate=True)
 
 
 setup(

@@ -26,10 +26,10 @@ __license__ = u"""
 
 from typing import Dict, List
 from abc import ABC, abstractmethod
-from graph.vertex_set import VertexSet
-from graph.attributes import Attributes
-from graph.graph_data import AdjacencyMatrixC
 
+from pagral.graph.vertex_set import VertexSet
+from pagral.graph.attributes import Attributes
+from pagral.graph.graph_data import AdjacencyMatrixC
 
 #
 # def check_names(func):

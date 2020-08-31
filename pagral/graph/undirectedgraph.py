@@ -1,5 +1,4 @@
-import numpy as np
-from graph.basegraph import BaseGraph
+from pagral.graph.basegraph import BaseGraph
 
 
 class UGraph(BaseGraph):
