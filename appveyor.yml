@@ -39,10 +39,11 @@ install:
 
   - cmd: set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%WINKITS%;%PATH%
   - sh: export PATH=$MINICONDA:$MINICONDA/bin:$PATH
+  - sh: conda init
 
   - cmd: activate.bat
-  - sh: source $MINICONDA/bin/activate
-  - sh: conda init
+  # - sh: source $MINICONDA/bin/activate
+  - sh: conda list
 
   - cmd: set PYTHONUNBUFFERED=1
   - sh: PYTHONUNBUFFERED=1
