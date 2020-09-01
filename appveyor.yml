@@ -10,34 +10,33 @@ branches:
 only_commits:
   message: /\[build\]/
 
-image:
-  - Visual Studio 2019
+# image:
+#  - Visual Studio 2019
 #  - Ubuntu
 #  - macOS
 
 environment:
   PYTHON_VERSION: 3.7
-  WINKITS: "C:\\Program Files (x86)\\Windows Kits\\8.0\\bin\\x86"
-
-  # global:
-    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
-    # /E:ON and /V:ON options are not enabled in the batch script interpreter
-    # See: http://stackoverflow.com/a/13751649/163740
-    # CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
 
   matrix:
-    # - MINICONDA: "C:\\Miniconda37"
-    #  PYTHON_VERSION: "3.7.4"
-    #  PYTHON_ARCH: "32"
-    - MINICONDA: "C:\\Miniconda37-x64"
-      PYTHON_VERSION: "3.7.4"
-      PYTHON_ARCH: "64"
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#      MINICONDA: "C:\\Miniconda37"
+#      WINKITS: "C:\\Program Files (x86)\\Windows Kits\\8.0\\bin\\x86"
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#      MINICONDA: "C:\\Miniconda37-x64"
+#      WINKITS: "C:\\Program Files (x86)\\Windows Kits\\8.0\\bin\\x64"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+      platform: x64
+      MINICONDA: $HOME/Miniconda37-x64
 
-init:
-  -  cmd: ECHO %PYTHON_VERSION% %MINICONDA%
+# init:
+#   -  cmd: ECHO %PYTHON_VERSION% %MINICONDA%
 #   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 install:
+  - sh: wget https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.3-Linux-x86_64.sh -O ~/miniconda.sh
+  - sh: bash ~/miniconda.sh -b -p $HOME/Miniconda37
+
   - cmd: set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%WINKITS%;%PATH%
   - cmd: activate.bat
   - cmd: set PYTHONUNBUFFERED=1
@@ -47,9 +46,7 @@ install:
   # - cmd: conda info -a
   - cmd: conda config --set show_channel_urls true
   - cmd: conda config --add channels conda-forge
-  # - cmd: conda config --add channels anaconda
   - cmd: conda install -c conda-forge setuptools wheel conda-build anaconda-client conda-verify cython numpy=1.19.1 --yes --quiet
-  # - cmd: conda install -c anaconda numpy=1.19.1 --yes --quiet
 
 build: off
 
