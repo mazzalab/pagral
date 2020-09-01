@@ -38,7 +38,7 @@ install:
   - sh: bash ~/miniconda.sh -b -p $MINICONDA
 
   - cmd: set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%WINKITS%;%PATH%
-  - sh: PATH=$MINICONDA;$MINICONDA/Scripts;$PATH
+  - sh: PATH=$MINICONDA;$MINICONDA/bin;$PATH
 
   - cmd: activate.bat
   - sh: source activate
@@ -46,12 +46,12 @@ install:
   - cmd: set PYTHONUNBUFFERED=1
   - sh: PYTHONUNBUFFERED=1
 
-  - cmd: conda config --set always_yes yes --set changeps1 no
-  - cmd: conda update -q conda
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
   # - cmd: conda info -a
-  - cmd: conda config --set show_channel_urls true
-  - cmd: conda config --add channels conda-forge
-  - cmd: conda install -c conda-forge setuptools wheel conda-build anaconda-client conda-verify cython numpy=1.19.1 --yes --quiet
+  - conda config --set show_channel_urls true
+  - conda config --add channels conda-forge
+  - conda install -c conda-forge setuptools wheel conda-build anaconda-client conda-verify cython numpy=1.19.1 --yes --quiet
 
 build: off
 
