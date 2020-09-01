@@ -35,11 +35,16 @@ environment:
 
 install:
   - sh: wget https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.3-Linux-x86_64.sh -O ~/miniconda.sh
-  - sh: bash ~/miniconda.sh -b -p $HOME/Miniconda37
+  - sh: bash ~/miniconda.sh -b -p $MINICONDA
 
   - cmd: set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%WINKITS%;%PATH%
+  - sh: PATH=$MINICONDA;$MINICONDA\\Scripts;$PATH
+
   - cmd: activate.bat
+  - sh: source activate
+
   - cmd: set PYTHONUNBUFFERED=1
+  - sh: PYTHONUNBUFFERED=1
 
   - cmd: conda config --set always_yes yes --set changeps1 no
   - cmd: conda update -q conda
@@ -65,9 +70,9 @@ test_script:
 
 after_test:
   # If tests are successful, create binary packages for the project.
-  - cmd: python setup.py bdist_wheel -d pypi_dist clean --all
+  - python setup.py bdist_wheel -d pypi_dist clean --all
   - ps: "ls pypi_dist"
-  - cmd: conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
+  - conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
   - ps: "ls conda_dist"
 
 artifacts:
