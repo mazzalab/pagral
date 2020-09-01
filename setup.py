@@ -1,7 +1,6 @@
 import sys
-from setuptools import setup, find_packages, Extension
-
 import numpy
+from setuptools import setup, find_packages, Extension
 
 ########################
 VERSION = "0.1"
