@@ -41,7 +41,8 @@ install:
   - sh: export PATH=$MINICONDA:$MINICONDA/bin:$PATH
 
   - cmd: activate.bat
-  - sh: source activate
+  - sh: source $MINICONDA/bin/activate
+  - sh: conda init
 
   - cmd: set PYTHONUNBUFFERED=1
   - sh: PYTHONUNBUFFERED=1
