@@ -27,7 +27,7 @@ environment:
 #      WINKITS: "C:\\Program Files (x86)\\Windows Kits\\8.0\\bin\\x64"
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
       platform: x64
-      MINICONDA: $HOME/Miniconda37-x64
+      MINICONDA: ~/Miniconda37-x64
 
 # init:
 #   -  cmd: ECHO %PYTHON_VERSION% %MINICONDA%
