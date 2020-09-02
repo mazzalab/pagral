@@ -25,12 +25,13 @@ environment:
 #    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
 #      MINICONDA: "C:\\Miniconda37-x64"
 #      WINKITS: "C:\\Program Files (x86)\\Windows Kits\\8.0\\bin\\x64"
-    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+#      platform: x64
+#      MINICONDA: /home/appveyor/Miniconda37-x64
+    - APPVEYOR_BUILD_WORKER_IMAGE: macOS
       platform: x64
       MINICONDA: /home/appveyor/Miniconda37-x64
-    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
-      platform: x32
-      MINICONDA: /home/appveyor/Miniconda37
 
 # init:
 #   -  cmd: ECHO %PYTHON_VERSION% %MINICONDA%
