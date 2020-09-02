@@ -2,7 +2,7 @@ import sys
 import numpy
 from setuptools import setup, find_packages, Extension
 
-########################
+########################~
 VERSION = "0.1"
 ISRELEASED = False
 __version__ = VERSION
