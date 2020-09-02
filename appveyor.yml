@@ -27,14 +27,14 @@ environment:
 #      WINKITS: "C:\\Program Files (x86)\\Windows Kits\\8.0\\bin\\x64"
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
       platform: x64
-      MINICONDA: ~/Miniconda37-x64
+      MINICONDA: /Miniconda37-x64
 
 # init:
 #   -  cmd: ECHO %PYTHON_VERSION% %MINICONDA%
 #   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 install:
-  - sh: wget https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.3-Linux-x86_64.sh -O ~/miniconda.sh
+  - sh: wget https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.3-Linux-x86_64.sh -O /miniconda.sh
   - sh: bash ~/miniconda.sh -b -p $MINICONDA
 
   - cmd: set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%WINKITS%;%PATH%
