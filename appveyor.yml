@@ -32,7 +32,7 @@ environment:
 #      MINICONDA_REPO: https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.3-Linux-x86_64.sh
     - APPVEYOR_BUILD_WORKER_IMAGE: macOS
       platform: x64
-      MINICONDA: /home/appveyor/Miniconda37-x64
+      MINICONDA: /Users/appveyor/Miniconda37-x64
       MINICONDA_REPO: https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.3-MacOSX-x86_64.sh
 
 init:
