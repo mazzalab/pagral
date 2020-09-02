@@ -29,6 +29,7 @@ environment:
 #    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
 #      platform: x64
 #      MINICONDA: /home/appveyor/Miniconda37-x64
+#      MINICONDA_REPO: https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.3-Linux-x86_64.sh
     - APPVEYOR_BUILD_WORKER_IMAGE: macOS
       platform: x64
       MINICONDA: /home/appveyor/Miniconda37-x64
@@ -39,7 +40,12 @@ environment:
 #   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 install:
-  - sh: wget $MINICONDA_REPO -O ~/miniconda.sh
+  - ps: |
+      if ($isLinux) {
+        wget $MINICONDA_REPO -O ~/miniconda.sh
+      } elseif ($isMacOS){
+        curl -o ~/miniconda.sh $MINICONDA_REPO
+      }
   - sh: bash ~/miniconda.sh -b -p $MINICONDA
 
   - cmd: set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%WINKITS%;%PATH%
