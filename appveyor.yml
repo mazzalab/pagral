@@ -19,17 +19,18 @@ environment:
   PYTHON_VERSION: 3.7
 
   matrix:
-#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#      MINICONDA: "C:\\Miniconda37"
-#      WINKITS: "C:\\Program Files (x86)\\Windows Kits\\8.0\\bin\\x86"
-#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#      MINICONDA: "C:\\Miniconda37-x64"
-#      WINKITS: "C:\\Program Files (x86)\\Windows Kits\\8.0\\bin\\x64"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      MINICONDA: "C:\\Miniconda37"
+      WINKITS: "C:\\Program Files (x86)\\Windows Kits\\8.0\\bin\\x86"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      MINICONDA: "C:\\Miniconda37-x64"
+      WINKITS: "C:\\Program Files (x86)\\Windows Kits\\8.0\\bin\\x64"
 
-#    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
-#      platform: x64
-#      MINICONDA: /home/appveyor/Miniconda37-x64
-#      MINICONDA_REPO: https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.3-Linux-x86_64.sh
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+      platform: x64
+      MINICONDA: /home/appveyor/Miniconda37-x64
+      MINICONDA_REPO: https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.3-Linux-x86_64.sh
+
     - APPVEYOR_BUILD_WORKER_IMAGE: macOS
       platform: x64
       MINICONDA: /Users/appveyor/Miniconda37-x64
