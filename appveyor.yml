@@ -28,6 +28,9 @@ environment:
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
       platform: x64
       MINICONDA: /home/appveyor/Miniconda37-x64
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+      platform: x32
+      MINICONDA: /home/appveyor/Miniconda37
 
 # init:
 #   -  cmd: ECHO %PYTHON_VERSION% %MINICONDA%
@@ -85,9 +88,10 @@ artifacts:
 #  - TODO: upload the content of dist/*.whl to a public wheelhouse
 #
 
-on_finish:
-  - sh: export APPVEYOR_SSH_BLOCK=true
-  - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
+# on_finish:
+  # - sh: export APPVEYOR_SSH_BLOCK=true
+  # - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
+
   # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   # Upload test results to AppVeyor
   #  - ps: |
