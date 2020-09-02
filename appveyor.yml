@@ -53,9 +53,7 @@ install:
   # - cmd: conda info -a
   - conda config --set show_channel_urls true
   - conda config --add channels conda-forge
-  - conda config --add channels anaconda
-  - conda install -c conda-forge setuptools wheel conda-build anaconda-client conda-verify cython --yes --quiet
-  - conda install -c anaconda numpy=1.19.1 --yes --quiet
+  - conda install -c conda-forge setuptools wheel conda-build anaconda-client conda-verify cython numpy=1.19.1 --yes --quiet
 
 build: off
 
@@ -73,6 +71,7 @@ test_script:
   #      if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode) }
 
 after_test:
+  - which python
   # If tests are successful, create binary packages for the project.
   - python setup.py bdist_wheel -d pypi_dist clean --all
   - ps: "ls pypi_dist"
