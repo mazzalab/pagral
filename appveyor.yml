@@ -59,7 +59,6 @@ install:
 
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
-  # - cmd: conda info -a
   - conda config --set show_channel_urls true
   - conda config --add channels conda-forge
   - conda install -c conda-forge setuptools wheel conda-build anaconda-client conda-verify cython numpy=1.19.1 --yes --quiet
@@ -81,14 +80,12 @@ test_script:
 
 after_test:
   - which python
-  # If tests are successful, create binary packages for the project.
   - python setup.py bdist_wheel -d pypi_dist clean --all
   - ps: "ls pypi_dist"
   - conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
   - ps: "ls conda_dist"
 
 artifacts:
-  # Archive the generated packages in the ci.appveyor.com build report.
   - path: conda_dist\**\*.tar.bz2
   - path: pypi_dist\*.whl
 
