@@ -20,10 +20,10 @@ cdef class AdjacencyMatrix:
         self.weighted= weighted
 
         if self.weighted:
-            self.adjmatrix = np.zeros((self.size, self.size), dtype=FTYPE)
+            self.adjmatrix = np.zeros((size, size), dtype=FTYPE)
             self.adjtype = np.dtype(FTYPE)
         else:
-            self.adjmatrix = np.zeros((self.size, self.size), dtype=BTYPE)
+            self.adjmatrix = np.zeros((size, size), dtype=BTYPE)
             self.adjtype = np.dtype(BTYPE)
 
     def __str__(self):
