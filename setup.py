@@ -34,8 +34,8 @@ else:
 ext = '.pyx' if USE_CYTHON else '.cpp'
 
 extension_module = Extension(
-    'pagral.graph.graph_data',
-    sources=["./pagral/graph/graph_data"+ext],
+    'pagral.graph.adjacency_matrix',
+    sources=["./pagral/graph/adjacency_matrix"+ext],
     include_dirs=[numpy.get_include()],
     define_macros=[("NPY_NO_DEPRECATED_API",)],
 )

@@ -1,6 +1,6 @@
 import numpy as np
 from typing import List, Dict
-from pagral.graph.attributes import Attributes
+from pagral.graph.attribute import Attribute
 
 
 class VertexSet:
@@ -10,9 +10,9 @@ class VertexSet:
         # {name -> index}
         self.__names: Dict[str, int] = {k: v for v, k in enumerate(names)}
         # {index -> attrs}
-        self.__vertex_attrs: Dict[int, Attributes] = dict.fromkeys(range(len(names)), Attributes())
+        self.__vertex_attrs: Dict[int, Attribute] = dict.fromkeys(range(len(names)), Attribute())
 
-    def __getitem__(self, node) -> Attributes:
+    def __getitem__(self, node) -> Attribute:
         """
         Get vertex :class:`Attribute` by vertex id or name
         :param node: Id or name of a selected vertex
@@ -27,7 +27,7 @@ class VertexSet:
         else:
             raise TypeError('The `node` argument must be of type int or str, not {}'.format(type(node).__name__))
 
-    def __setitem__(self, node, attributes: Attributes):
+    def __setitem__(self, node, attributes: Attribute):
         """
         Set vertex :class:`Attribute` by vertex id or name
         :param node: Id or name of a selected vertex
@@ -51,12 +51,12 @@ class VertexSet:
     def get_index(self, name: str) -> int:
         return self.__names[name]
 
-    def __insert_vertex(self, name: str):
+    def insert_vertex(self, name: str):
         self.__idx = np.append(self.__idx, name)
         self.__names[name] = self.__idx.size - 1
-        self.__vertex_attrs[self.__idx.size - 1] = Attributes()
+        self.__vertex_attrs[self.__idx.size - 1] = Attribute()
 
-    def __remove_vertex(self, name: str):
+    def remove_vertex(self, name: str):
         del_idx = self.__names[name]
 
         del self.__names[name]

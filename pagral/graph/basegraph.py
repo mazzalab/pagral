@@ -24,68 +24,75 @@ __license__ = u"""
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
   """
 
-from typing import Dict, List
+
+from typing import Dict, List, Tuple
 from abc import ABC, abstractmethod
-
+import numpy as np
 from pagral.graph.vertex_set import VertexSet
-from pagral.graph.attributes import Attributes
-from pagral.graph.graph_data import AdjacencyMatrixC
+from pagral.graph.edge_attribute import EdgeAttr
+from pagral.graph.attribute import Attribute
+from pagral.graph.adjacency_matrix import AdjacencyMatrix
 
-#
-# def check_names(func):
-#     def wrapper(graph_data: IGraphData = None, names: List[str] = None, weighted: bool = False):
-#         if (graph_data and names and graph_data.vcount() == len(names)) or \
-#                 (graph_data and not names) or \
-#                 (not graph_data and not names):
-#             func(graph_data, names, weighted)
-#         else:
-#             raise ValueError("graph_data and names must have the same size")
-#
-#     return wrapper
+
+def check_names(func):
+    def wrapper(adj_matrix: AdjacencyMatrix = None, names: List[str] = None,
+                directed: bool = False, weighted: bool = False):
+        if adj_matrix and names and adj_matrix.size() != len(names):
+            raise ValueError("graph_data and names must have the same size")
+        else:
+            func(adj_matrix, names, directed, weighted)
+    return wrapper
 
 
 class BaseGraph(ABC):
-    # @check_names
-    def __init__(self, graph_data: AdjacencyMatrixC = None, names: List[str] = None, weighted: bool = False):
+    @check_names
+    def __init__(self, adj_matrix: AdjacencyMatrix = None, names: List[str] = None,
+                 directed: bool = False, weighted: bool = False):
         """
         Base graph constructor which initializes:
         - _weighted boolean variable to account for weighted edges
         - _graph_data that references an IGraphData , which holds the actual graph data structure
         - __vertex_set that holds vertex names and attributes
         - __graph_attrs that refers to the set of global graph attributes
-        :param graph_data: An optional IGraphData object holding the internal graph data structure
+        :param adj_matrix: An optional IGraphData object holding the internal graph data structure
         :param names: An optional list of node names
+        :param directed: An optional flag that specifies whether the graph will be directed or not
         :param weighted: An optional flag that specifies whether the graph will be weighted or not
         """
         self._weighted: bool = weighted
+        self._directed: bool = directed
 
-        c = AdjacencyMatrixC()
-
-        if not names:
-            names: List[str] = [str(i) for i in range(self.vcount())]
-
-        # Assign or create the proper internal IGraphData structure
-        if graph_data:
-            self._graph_data: AdjacencyMatrixC = graph_data
+        # Assign or create an adjacency matrix
+        if adj_matrix:
+            self._adj_matrix: AdjacencyMatrix = adj_matrix
+            if not names:
+                names: List[str] = [str(i) for i in range(self.vcount())]
         else:
-            if weighted:
-                self._graph_data: AdjacencyMatrixC = AdjacencyMatrixC(weighted=True, size=len(names))
+            if self._weighted and names:
+                self._adj_matrix: AdjacencyMatrix = AdjacencyMatrix(size=len(names), weighted=True)
+            elif self._weighted and not names:
+                self._adj_matrix: AdjacencyMatrix = AdjacencyMatrix(size=0, weighted=True)
+            elif not self._weighted and names:
+                self._adj_matrix: AdjacencyMatrix = AdjacencyMatrix(size=len(names), weighted=False)
             else:
-                self._graph_data: AdjacencyMatrixC = AdjacencyMatrixC(weighted=False, size=len(names))
+                self._adj_matrix: AdjacencyMatrix = AdjacencyMatrix(size=0, weighted=False)
 
         # Collection of vertices of the graph
         self.__vertex_set: VertexSet = VertexSet(names)
 
-        # Global attributes of the graph
-        self.__graph_attrs: Dict[str, Attributes] = {}
+        # Edge attributes
+        self.__edge_attrs: EdgeAttr = EdgeAttr()
 
-    def __getitem__(self, attr_name: str) -> Attributes:
+        # Global attributes of the graph
+        self.__graph_attrs: Dict[str, Attribute] = {}
+
+    def __getitem__(self, attr_name: str) -> Attribute:
         if isinstance(attr_name, str):
             return self.__graph_attrs[attr_name]
         else:
             raise TypeError('Index must be str, not {}'.format(type(attr_name).__name__))
 
-    def __setitem__(self, attr_name: str, attr_value: Attributes):
+    def __setitem__(self, attr_name: str, attr_value: Attribute):
         if isinstance(attr_name, str):
             self.__graph_attrs[attr_name] = attr_value
         else:
@@ -105,21 +112,33 @@ class BaseGraph(ABC):
         Create and set the vertex set
         :param names: List of names of vertices
         """
-        if len(names) == self._size:
+        if len(names) == self.vcount():
             self.__vertex_set = VertexSet(names)
         else:
             raise ValueError("The length of the list of names is incompatible with the graph size")
 
     @property
-    def graph_data(self):
-        return self._graph_data
+    def E(self) -> np.ndarray:
+        return self.adjacency_matrix.nonzero_idx()
 
-    @graph_data.setter
-    def graph_data(self, graph_data: AdjacencyMatrixC):
-        self._graph_data = graph_data
+    @property
+    def Eattrs(self):
+        return self.__edge_attrs
+
+    @Eattrs.setter
+    def Eattrs(self, attrs: EdgeAttr):
+        self.__edge_attrs = attrs
+
+    @property
+    def adjacency_matrix(self):
+        return self._adj_matrix
+
+    @adjacency_matrix.setter
+    def adjacency_matrix(self, adj_matrix: AdjacencyMatrix):
+        self._adj_matrix = adj_matrix
 
     def vcount(self) -> int:
-        return self._graph_data.vcount()
+        return self._adj_matrix.size()
 
     @abstractmethod
     def ecount(self) -> int:
@@ -128,6 +147,9 @@ class BaseGraph(ABC):
     def is_weighted(self) -> bool:
         return self._weighted
 
+    def is_directed(self) -> bool:
+        return self._directed
+
     # Insert/delete methods
     def add_vertex(self, name: str) -> int:
         """
@@ -135,8 +157,8 @@ class BaseGraph(ABC):
         :param name: Name of the new vertex
         :return: The index of the inserted vertex
         """
-        self._graph_data._add(name)
-        self.__vertex_set._VertexSet__insert_vertex(name)
+        self._adj_matrix.expand(1)
+        self.__vertex_set.insert_vertex(name)
         return self.vcount()
 
     def delete_vertex(self, name):
@@ -146,8 +168,8 @@ class BaseGraph(ABC):
         :return: The index of the deleted vertex
         """
         # TODO: elaborate more efficient strategy of node deletion as, e.g., nullify columns/rows instead of removing
-        self._graph_data._remove(name)
-        return self.__vertex_set._VertexSet__remove_vertex(name)
+        self._adj_matrix._remove(name)
+        return self.__vertex_set.remove_vertex(name)
 
     @abstractmethod
     def add_edge(self, vertex_name1: str, vertex_name2: str):

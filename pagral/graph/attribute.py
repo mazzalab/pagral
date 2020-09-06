@@ -1,4 +1,4 @@
-class Attributes:
+class Attribute:
     def __init__(self):
         self.__attr = {}
 
