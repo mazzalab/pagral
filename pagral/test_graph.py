@@ -1,6 +1,6 @@
-from graph.undirectedgraph import UGraph
+from pagral.graph.directedgraph import DGraph
 
-G = UGraph(size=6)
+G = DGraph(directed=False, weighted=False)
 # G.set_vertex(0,'a')
 # G.set_vertex(1,'b')
 # G.set_vertex(2,'c')
