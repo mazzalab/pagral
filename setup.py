@@ -50,8 +50,8 @@ if USE_CYTHON:
 
 
 ver = sys.argv[7]
-print("version {} passed to setup.py".format("-".join(sys.argv)))
-assert not re.match('^[0-9]+\.[0-9]+\.[0-9]+$', ver), "Invalid version number"
+print("version {} passed to setup.py".format(ver))
+assert re.match('^[0-9]+\.[0-9]+\.[0-9]+$', ver), "Invalid version number"
 VERSION = ver
 del sys.argv[6:7]
 
