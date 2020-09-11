@@ -47,13 +47,15 @@ if USE_CYTHON:
 
 if 'APPVEYOR_BUILD_VERSION' not in os.environ:
     VERSION = os.environ['PKG_VERSION']
-
-print("\n\n"+", ".join(sys.argv)+"\n\n")
-if sys.argv[1] == "install":
-    VERSION = sys.argv[5]
-    del sys.argv[4:6]
 else:
     VERSION = os.environ['APPVEYOR_BUILD_VERSION']
+
+# print("\n\n"+", ".join(sys.argv)+"\n\n")
+# if sys.argv[1] == "install":
+#     VERSION = sys.argv[5]
+#     del sys.argv[4:6]
+# else:
+#     VERSION = os.environ['APPVEYOR_BUILD_VERSION']
 
 print("version {} passed to setup.py".format(VERSION))
 assert re.match('^[0-9]+\.[0-9]+\.[0-9]+$', VERSION), "Invalid version number"
