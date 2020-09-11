@@ -1,13 +1,9 @@
+import os
 import re
 import sys
 import numpy
 from setuptools import setup, find_packages, Extension
 
-# #######################
-VERSION = "0.1"
-ISRELEASED = False
-__version__ = VERSION
-# #######################
 
 try:
     from importlib import util
@@ -49,14 +45,9 @@ if USE_CYTHON:
                                  annotate=True)
 
 
-import os
-print(os.environ['APPVEYOR_BUILD_VERSION'])
-print(sys.argv)
-ver = sys.argv[7]
-print("version {} passed to setup.py".format(ver))
-assert re.match('^[0-9]+\.[0-9]+\.[0-9]+$', ver), "Invalid version number"
-VERSION = ver
-del sys.argv[6:8]
+VERSION = os.environ['APPVEYOR_BUILD_VERSION']
+print("version {} passed to setup.py".format(VERSION))
+assert re.match('^[0-9]+\.[0-9]+\.[0-9]+$', VERSION), "Invalid version number"
 
 setup(
     name='pagral',
