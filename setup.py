@@ -53,7 +53,7 @@ ver = sys.argv[7]
 print("version {} passed to setup.py".format(ver))
 assert re.match('^[0-9]+\.[0-9]+\.[0-9]+$', ver), "Invalid version number"
 VERSION = ver
-del sys.argv[5:7]
+del sys.argv[7:8]
 print(sys.argv)
 
 setup(
