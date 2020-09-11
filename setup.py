@@ -45,10 +45,13 @@ if USE_CYTHON:
                                  annotate=True)
 
 
+if not os.environ['APPVEYOR_BUILD_VERSION']:
+    print(os.environ)
+
+print("\n\n"+", ".join(sys.argv)+"\n\n")
 if sys.argv[1] == "install":
-    # print(os.environ)
-    VERSION = sys.argv[4]
-    del sys.argv[4]
+    VERSION = sys.argv[5]
+    del sys.argv[4:5]
 else:
     VERSION = os.environ['APPVEYOR_BUILD_VERSION']
 
