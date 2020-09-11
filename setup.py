@@ -49,6 +49,7 @@ if USE_CYTHON:
                                  annotate=True)
 
 
+print(sys.argv)
 ver = sys.argv[7]
 print("version {} passed to setup.py".format(ver))
 assert re.match('^[0-9]+\.[0-9]+\.[0-9]+$', ver), "Invalid version number"
