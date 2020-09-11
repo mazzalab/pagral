@@ -54,6 +54,7 @@ print("version {} passed to setup.py".format(ver))
 assert re.match('^[0-9]+\.[0-9]+\.[0-9]+$', ver), "Invalid version number"
 VERSION = ver
 del sys.argv[6:7]
+print(sys.argv)
 
 setup(
     name='pagral',
