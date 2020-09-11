@@ -79,7 +79,7 @@ after_test:
   - which python
 #  - python setup.py bdist_wheel -d pypi_dist clean --all --version %APPVEYOR_BUILD_VERSION%
 #  - ps: "ls pypi_dist"
-  - conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
+  - conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist --ver %APPVEYOR_BUILD_VERSION%
 #  - ps: "ls conda_dist"
 
 artifacts:
