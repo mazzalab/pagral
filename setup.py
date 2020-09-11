@@ -47,7 +47,7 @@ if USE_CYTHON:
 
 if sys.argv[1] == "install":
     print(sys.argv)
-    del sys.argv[7:9]
+    del sys.argv[4]
 
 print(sys.argv)
 VERSION = os.environ['APPVEYOR_BUILD_VERSION']
