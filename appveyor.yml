@@ -77,10 +77,10 @@ test_script:
 
 after_test:
   - which python
-  - python setup.py bdist_wheel -d pypi_dist clean --all --version %APPVEYOR_BUILD_VERSION%
-  - ps: "ls pypi_dist"
-#  - conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
-#  - ps: "ls conda_dist"
+#  - python setup.py bdist_wheel -d pypi_dist clean --all --version %APPVEYOR_BUILD_VERSION%
+#  - ps: "ls pypi_dist"
+  - conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist --version %APPVEYOR_BUILD_VERSION%
+  - ps: "ls conda_dist"
 
 artifacts:
   - path: conda_dist\**\*.tar.bz2
