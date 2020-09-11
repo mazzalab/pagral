@@ -77,7 +77,7 @@ test_script:
 
 after_test:
   - which python
-  - python setup.py bdist_wheel -d pypi_dist clean --all --version '{version}' # %APPVEYOR_BUILD_NUMBER%
+  - python setup.py bdist_wheel -d pypi_dist clean --all --version {version} # %APPVEYOR_BUILD_NUMBER%
   - ps: "ls pypi_dist"
 #  - conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
 #  - ps: "ls conda_dist"
