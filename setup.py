@@ -1,7 +1,7 @@
 import re
 import sys
 import numpy
-from setuptools import setup, find_packages, Extension, Command
+from setuptools import setup, find_packages, Extension
 
 # #######################
 VERSION = "0.1"
@@ -49,6 +49,8 @@ if USE_CYTHON:
                                  annotate=True)
 
 
+import os
+print(os.environ['APPVEYOR_BUILD_VERSION'])
 print(sys.argv)
 ver = sys.argv[7]
 print("version {} passed to setup.py".format(ver))
