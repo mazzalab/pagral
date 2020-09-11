@@ -51,7 +51,7 @@ if not os.environ['APPVEYOR_BUILD_VERSION']:
 print("\n\n"+", ".join(sys.argv)+"\n\n")
 if sys.argv[1] == "install":
     VERSION = sys.argv[5]
-    del sys.argv[4:5]
+    del sys.argv[4:6]
 else:
     VERSION = os.environ['APPVEYOR_BUILD_VERSION']
 
