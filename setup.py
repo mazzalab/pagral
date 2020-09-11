@@ -47,8 +47,10 @@ if USE_CYTHON:
 
 if sys.argv[1] == "install":
     print(os.environ)
+    VERSION = sys.argv[4]
+else:
+    VERSION = os.environ['APPVEYOR_BUILD_VERSION']
 
-VERSION = os.environ['APPVEYOR_BUILD_VERSION']
 print("version {} passed to setup.py".format(VERSION))
 assert re.match('^[0-9]+\.[0-9]+\.[0-9]+$', VERSION), "Invalid version number"
 
