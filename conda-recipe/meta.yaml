@@ -32,9 +32,7 @@ requirements:
     - cython
 
   run:
-    - script_env:
-      - APPVEYOR_BUILD_VERSION
-
+    - script_env=APPVEYOR_BUILD_VERSION
     - python ==3.7
     - numpy==1.19.1
 
