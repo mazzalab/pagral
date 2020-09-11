@@ -45,6 +45,7 @@ if USE_CYTHON:
                                  annotate=True)
 
 
+print(sys.argv)
 VERSION = os.environ['APPVEYOR_BUILD_VERSION']
 print("version {} passed to setup.py".format(VERSION))
 assert re.match('^[0-9]+\.[0-9]+\.[0-9]+$', VERSION), "Invalid version number"
