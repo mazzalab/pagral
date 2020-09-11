@@ -10,11 +10,6 @@ branches:
 only_commits:
   message: /\[build\]/
 
-# image:
-#  - Visual Studio 2019
-#  - Ubuntu
-#  - macOS
-
 environment:
   PYTHON_VERSION: 3.7
 
@@ -22,19 +17,21 @@ environment:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       MINICONDA: "C:\\Miniconda37"
       WINKITS: "C:\\Program Files (x86)\\Windows Kits\\8.0\\bin\\x86"
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      MINICONDA: "C:\\Miniconda37-x64"
-      WINKITS: "C:\\Program Files (x86)\\Windows Kits\\8.0\\bin\\x64"
-
-    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
-      platform: x64
-      MINICONDA: /home/appveyor/Miniconda37-x64
-      MINICONDA_REPO: https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.3-Linux-x86_64.sh
-
-    - APPVEYOR_BUILD_WORKER_IMAGE: macOS
-      platform: x64
-      MINICONDA: /Users/appveyor/Miniconda37-x64
-      MINICONDA_REPO: https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.3-MacOSX-x86_64.sh
+      platform: x32
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#      MINICONDA: "C:\\Miniconda37-x64"
+#      WINKITS: "C:\\Program Files (x86)\\Windows Kits\\8.0\\bin\\x64"
+#      platform: x64
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+#      platform: x64
+#      MINICONDA: /home/appveyor/Miniconda37-x64
+#      MINICONDA_REPO: https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.3-Linux-x86_64.sh
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: macOS
+#      platform: x64
+#      MINICONDA: /Users/appveyor/Miniconda37-x64
+#      MINICONDA_REPO: https://repo.anaconda.com/miniconda/Miniconda3-py37_4.8.3-MacOSX-x86_64.sh
 
 init:
   - ps: |
@@ -82,8 +79,8 @@ after_test:
   - which python
   - python setup.py bdist_wheel -d pypi_dist clean --all
   - ps: "ls pypi_dist"
-  - conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
-  - ps: "ls conda_dist"
+#  - conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
+#  - ps: "ls conda_dist"
 
 artifacts:
   - path: conda_dist\**\*.tar.bz2

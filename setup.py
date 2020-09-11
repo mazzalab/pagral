@@ -1,12 +1,13 @@
+import re
 import sys
 import numpy
-from setuptools import setup, find_packages, Extension
+from setuptools import setup, find_packages, Extension, Command
 
-########################~
+# #######################
 VERSION = "0.1"
 ISRELEASED = False
 __version__ = VERSION
-########################
+# #######################
 
 try:
     from importlib import util
@@ -35,16 +36,23 @@ ext = '.pyx' if USE_CYTHON else '.cpp'
 
 extension_module = Extension(
     'pagral.graph.adjacency_matrix',
-    sources=["./pagral/graph/adjacency_matrix"+ext],
+    sources=["./pagral/graph/adjacency_matrix" + ext],
     include_dirs=[numpy.get_include()],
     define_macros=[("NPY_NO_DEPRECATED_API",)],
 )
 
 if USE_CYTHON:
     from Cython.Build import cythonize
+
     extension_module = cythonize([extension_module],
                                  compiler_directives={'language_level': "3"},
                                  annotate=True)
+
+
+ver = sys.argv[0]
+assert re.match('^[0-9]+\.[0-9]+\.[0-9]+$', ver), "Invalid version number"
+VERSION = ver
+del sys.argv[0]
 
 setup(
     name='pagral',
@@ -55,18 +63,11 @@ setup(
     long_description=open('./conda-recipe/README.txt').read(),
 
     packages=find_packages(),
-    # packages=['pyappveyordemo', 'pyappveyordemo.tests'],
     include_package_data=True,
 
     ext_modules=extension_module,
     zip_safe=False,
     license='GPL3',
-    # entry_points={
-    #     'console_scripts': [
-    #         'pyntacle = pyntacle.pyntacle:App'
-    #     ]
-    # },
-    # setup_requires=['numpy'],
     install_requires=[
         "numpy==1.19.1",
         "cython",
