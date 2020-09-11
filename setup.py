@@ -45,6 +45,7 @@ if USE_CYTHON:
                                  annotate=True)
 
 
+# if sys.argv[1] == "install":
 print(sys.argv)
 VERSION = os.environ['APPVEYOR_BUILD_VERSION']
 print("version {} passed to setup.py".format(VERSION))
