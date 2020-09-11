@@ -49,11 +49,11 @@ if USE_CYTHON:
                                  annotate=True)
 
 
-ver = sys.argv[0]
-print("version {} passed to setup.py".format(ver))
+ver = sys.argv[7]
+print("version {} passed to setup.py".format("-".join(sys.argv)))
 assert not re.match('^[0-9]+\.[0-9]+\.[0-9]+$', ver), "Invalid version number"
 VERSION = ver
-del sys.argv[0]
+del sys.argv[6:7]
 
 setup(
     name='pagral',
