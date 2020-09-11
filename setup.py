@@ -45,8 +45,9 @@ if USE_CYTHON:
                                  annotate=True)
 
 
-if not os.environ['APPVEYOR_BUILD_VERSION']:
+if 'APPVEYOR_BUILD_VERSION' not in os.environ:
     print(os.environ)
+    print("BUILD VER NOT FOUND!!!!")
 
 print("\n\n"+", ".join(sys.argv)+"\n\n")
 if sys.argv[1] == "install":
