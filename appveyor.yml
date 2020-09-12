@@ -70,7 +70,7 @@ build_script:
 test_script:
   # this produces nosetests.xml which is uploaded on_finish
   - ps: |
-      &$env:PYTHON\python -m unittest tests.graph.test_basegraph
+      python -m unittest tests.graph.test_basegraph
       if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode) }
   - coverage run -m unittest tests.graph.test_basegraph
   - coverage xml
