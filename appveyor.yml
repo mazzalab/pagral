@@ -72,7 +72,7 @@ test_script:
 #  - ps: |
 #      python -m unittest tests.graph.test_basegraph
 #      if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode) }
-  - ps: python -m unittest tests.graph.test_basegraph
+  - python -m unittest tests.graph.test_basegraph
   - coverage run -m unittest tests.graph.test_basegraph
   - coverage xml
   - ps: "cd .."
