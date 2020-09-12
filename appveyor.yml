@@ -68,10 +68,11 @@ build_script:
   # - conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
 
 test_script:
+  - ps: "ls ."
   - ps: |
-      python -m unittest tests.graph.test_basegraph -s pagral
+      python -m unittest pagral.tests.graph.test_basegraph
       if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode) }
-  - coverage run -m unittest tests.graph.test_basegraph -s pagral
+  - coverage run -m unittest pagraltests.graph.test_basegraph -s pagral
   - coverage xml
 
 after_test:
