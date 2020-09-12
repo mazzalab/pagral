@@ -64,8 +64,7 @@ build: off
 
 build_script:
   - which python
-  - python setup.py bdist_wheel -d pypi_dist clean --all
-  # - conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
+  - python setup.py build_ext --inline -i clean
 
 test_script:
   - ps: "cd pagral"
@@ -81,6 +80,9 @@ after_test:
   - ps: "ls pypi_dist"
   - ps: "ls conda_dist"
   - ps: "ls ."
+  # - python setup.py bdist_wheel -d pypi_dist clean --all
+  # - conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
+
 
 artifacts:
   - path: conda_dist\**\*.tar.bz2
