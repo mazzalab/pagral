@@ -76,13 +76,13 @@ test_script:
   - coverage run -m unittest tests.graph.test_basegraph
   - coverage xml
   - ps: "cd .."
+  - ps: "ls ."
 
 after_test:
-  - ps: "ls pypi_dist"
-  - ps: "ls conda_dist"
-  - ps: "ls ."
   # - python setup.py bdist_wheel -d pypi_dist clean --all
   # - conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
+  # - ps: "ls pypi_dist"
+  # - ps: "ls conda_dist"
 
 
 artifacts:
