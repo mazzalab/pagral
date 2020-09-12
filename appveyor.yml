@@ -64,7 +64,7 @@ build: off
 
 build_script:
   - which python
-  - python setup.py build_ext --inline -i clean
+  - python setup.py build_ext --inplace -i clean
 
 test_script:
   - ps: "cd pagral"
