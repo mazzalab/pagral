@@ -13,7 +13,7 @@ cdef class AdjacencyMatrix:
     cdef np.dtype adjtype
     cdef bint weighted
 
-    def __init__(self):
+    def __init__(self, int size = 0, bint weighted = False):
         pass
 
     def __cinit__(self, int size = 0, bint weighted = False):

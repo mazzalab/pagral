@@ -1,11 +1,11 @@
 __author__ = ["Tommaso Mazza"]
 __copyright__ = u"Copyright 2020, The Pagral Project"
 __credits__ = [u"Ferenc Jordan"]
-__version__ = u"0.1.1"
+__version__ = u"0.1.2"
 __maintainer__ = u"Tommaso Mazza"
 __email__ = "bioinformatics@css-mendel.it"
 __status__ = u"Development"
-__date__ = u"19/08/2020"
+__date__ = u"12/09/2020"
 __license__ = u"""
   Copyright (C) 2016-2020  Tommaso Mazza <t.mazza@css-mendel.it>
   Viale Regina Margherita 261, 00198 Rome, Italy
@@ -25,13 +25,13 @@ __license__ = u"""
   """
 
 
-from typing import Dict, List, Tuple
+from typing import Dict, List
 from abc import ABC, abstractmethod
 import numpy as np
-from pagral.graph.vertex_set import VertexSet
-from pagral.graph.edge_attribute import EdgeAttr
-from pagral.graph.attribute import Attribute
-from pagral.graph.adjacency_matrix import AdjacencyMatrix
+from graph.vertex_set import VertexSet
+from graph.edge_attribute import EdgeAttr
+from graph.attribute import Attribute
+from graph.adjacency_matrix import AdjacencyMatrix
 
 
 def check_names(func):
@@ -65,8 +65,6 @@ class BaseGraph(ABC):
         # Assign or create an adjacency matrix
         if adj_matrix:
             self._adj_matrix: AdjacencyMatrix = adj_matrix
-            if not names:
-                names: List[str] = [str(i) for i in range(self.vcount())]
         else:
             if self._weighted and names:
                 self._adj_matrix: AdjacencyMatrix = AdjacencyMatrix(size=len(names), weighted=True)
@@ -76,6 +74,10 @@ class BaseGraph(ABC):
                 self._adj_matrix: AdjacencyMatrix = AdjacencyMatrix(size=len(names), weighted=False)
             else:
                 self._adj_matrix: AdjacencyMatrix = AdjacencyMatrix(size=0, weighted=False)
+
+        # Make the node names list
+        if not names:
+            names: List[str] = [str(i) for i in range(self.vcount())]
 
         # Collection of vertices of the graph
         self.__vertex_set: VertexSet = VertexSet(names)

@@ -1,8 +1,8 @@
-from unittest import TestCase
+import unittest
 from graph.directedgraph import DGraph
 
 
-class TestBaseGraph(TestCase):
+class TestBaseGraph(unittest.TestCase):
     def setUp(self):
         self.g = DGraph()
         self.g.add_vertex("A")
@@ -18,12 +18,10 @@ class TestBaseGraph(TestCase):
         self.g.add_edge(verts[1], verts[3], 1)
         self.g.add_edge(verts[1], verts[4], 2)
 
-    def test_add_vertex(self) -> int:
+    def test_add_vertex(self):
         self.g.add_vertex("Z")
-        pass
+        self.assertTrue(self.g.V.exists_node("Z"))
 
-        #
-        # self._graph_data._add(name)
-        # self.__vertex_set._VertexSet__insert_vertex(name)
-        # return self.vcount()
-        # self.fail()
+
+if __name__ == '__main__':
+    unittest.main()

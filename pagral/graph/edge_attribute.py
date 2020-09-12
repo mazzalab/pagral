@@ -1,5 +1,5 @@
 from typing import Tuple
-from pagral.graph.attribute import Attribute
+from graph.attribute import Attribute
 
 
 class EdgeAttr:

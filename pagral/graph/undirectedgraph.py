@@ -1,4 +1,4 @@
-from pagral.graph.basegraph import BaseGraph
+from graph.basegraph import BaseGraph
 
 
 class UGraph(BaseGraph):

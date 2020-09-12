@@ -1,6 +1,6 @@
 import numpy as np
 from typing import List, Dict
-from pagral.graph.attribute import Attribute
+from graph.attribute import Attribute
 
 
 class VertexSet:
@@ -50,6 +50,12 @@ class VertexSet:
 
     def get_index(self, name: str) -> int:
         return self.__names[name]
+
+    def exists_node(self, name: str) -> bool:
+        if name in self.__idx:
+            return True
+        else:
+            return False
 
     def insert_vertex(self, name: str):
         self.__idx = np.append(self.__idx, name)
