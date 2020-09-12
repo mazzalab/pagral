@@ -69,9 +69,10 @@ build_script:
 test_script:
   - ps: "cd pagral"
   - ps: "ls ."
-  - ps: |
-      python -m unittest tests.graph.test_basegraph
-      if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode) }
+#  - ps: |
+#      python -m unittest tests.graph.test_basegraph
+#      if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode) }
+  - ps: python -m unittest tests.graph.test_basegraph
   - coverage run -m unittest tests.graph.test_basegraph
   - coverage xml
   - ps: "cd .."
