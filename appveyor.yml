@@ -104,5 +104,8 @@ on_finish:
 
   # Upload test results to AppVeyor
   - ps: |
+      [xml]$content = Get-Content $testResultsFile
+      $content.'test-results'.'test-suite'.type = "Powershell"
+      $content.Save($testResultsFile)
       $wc = New-Object 'System.Net.WebClient'
       $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\pagral\coverage.xml))
