@@ -87,6 +87,7 @@ after_test:
 artifacts:
 # - path: conda_dist\**\*.tar.bz2
   - path: pypi_dist\*.whl
+    name: pypi_whl
   - path: pagral\coverage.xml
   - path: pagral\.coverage
 
@@ -99,7 +100,7 @@ deploy:
   - provider: GitHub
     release: pagral-v$(APPVEYOR_BUILD_VERSION)
     description: 'Latest tagged release of Pagral'
-    artifact: pypi_dist\*.whl
+    artifact: pypi_whl
     draft: false
     prerelease: false
     auth_token:
