@@ -97,12 +97,12 @@ artifacts:
 
 deploy:
   - provider: GitHub
-      artifact: pagral\coverage.xml           # upload all NuGet packages to release assets
-      draft: false
-      prerelease: false
-      on:
-        branch: master                # release from master branch only
-        APPVEYOR_REPO_TAG: false       # deploy on tag push only
+    artifact: pagral\coverage.xml           # upload all NuGet packages to release assets
+    draft: false
+    prerelease: false
+    on:
+      branch: master                # release from master branch only
+      APPVEYOR_REPO_TAG: false       # deploy on tag push only
 
 on_finish:
   # - sh: export APPVEYOR_SSH_BLOCK=true
