@@ -100,6 +100,8 @@ deploy:
     artifact: pagral\coverage.xml           # upload all NuGet packages to release assets
     draft: false
     prerelease: false
+    auth_token:
+      secure: %auth_token%
     on:
       branch: master                # release from master branch only
       APPVEYOR_REPO_TAG: false       # deploy on tag push only
@@ -108,11 +110,6 @@ on_finish:
   # - sh: export APPVEYOR_SSH_BLOCK=true
   # - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
 
-  # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-  - codecov -f pagral\coverage.xml
-
-
-  # Upload test results to AppVeyor
-  - ps: |
-      $wc = New-Object 'System.Net.WebClient'
-      $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path pagral\coverage.xml))
+# UPLOAD TO CODECOV
+#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+#  - codecov -f pagral\coverage.xml
