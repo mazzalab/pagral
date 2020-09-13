@@ -87,7 +87,7 @@ test_script:
 artifacts:
 # - path: conda_dist\**\*.tar.bz2
 # - path: pypi_dist\*.whl
-  - path: pagral\coverage.xml
+#  - path: pagral\coverage.xml
   - path: pagral\.coverage
 
 
