@@ -58,7 +58,7 @@ install:
   - conda update -q conda
   - conda config --set show_channel_urls true
   - conda config --add channels conda-forge
-  - conda install -c conda-forge setuptools wheel conda-build anaconda-client conda-verify cython numpy=1.19.1 coverage --yes --quiet
+  - conda install -c conda-forge setuptools wheel conda-build anaconda-client conda-verify cython numpy=1.19.1 coverage codecov --yes --quiet
 
 build: off
 
@@ -75,9 +75,6 @@ test_script:
   - python -m unittest tests.graph.test_basegraph
   - coverage run -m unittest tests.graph.test_basegraph
   - coverage xml
-  - ps: "ls ."
-#  - ps: "cd .."
-
 
 # after_test:
   # - python setup.py bdist_wheel -d pypi_dist clean --all
@@ -98,9 +95,9 @@ on_finish:
   # - sh: export APPVEYOR_SSH_BLOCK=true
   # - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
 
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-  - bash <(curl -s https://codecov.io/bash) -v -f "C:\projects\pagral\pagral\coverage.xml"
-
+  # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  # - codecov -t CODECOV_TOKEN
+  - bash <(curl -s https://codecov.io/bash)
 
   # Upload test results to AppVeyor
   #  - ps: |
