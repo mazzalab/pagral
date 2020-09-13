@@ -95,11 +95,12 @@ test_script:
 #
 
 on_finish:
-  - bash <(curl -s https://codecov.io/bash) -v -f "C:\projects\pagral\pagral\coverage.xml"
   # - sh: export APPVEYOR_SSH_BLOCK=true
   # - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
 
-  # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  - bash <(curl -s https://codecov.io/bash) -v -f "C:\projects\pagral\pagral\coverage.xml"
+
   # Upload test results to AppVeyor
   #  - ps: |
   #    # this uploads nosetests.xml produced in test_script step
