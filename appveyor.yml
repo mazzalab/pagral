@@ -86,15 +86,16 @@ after_test:
   # - ps: "ls conda_dist"
 
 
-artifacts:
-  - path: conda_dist\**\*.tar.bz2
-  - path: pypi_dist\*.whl
+#artifacts:
+# - path: conda_dist\**\*.tar.bz2
+# - path: pypi_dist\*.whl
 
-#on_success:
+on_success:
 #  - TODO: upload the content of dist/*.whl to a public wheelhouse
 #
 
-# on_finish:
+on_finish:
+  - bash <(curl -s https://codecov.io/bash)
   # - sh: export APPVEYOR_SSH_BLOCK=true
   # - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
 
