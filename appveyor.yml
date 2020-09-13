@@ -97,7 +97,7 @@ artifacts:
 
 deploy:
   - provider: GitHub
-      artifact: .coverage           # upload all NuGet packages to release assets
+      artifact: pagral\coverage.xml           # upload all NuGet packages to release assets
       draft: false
       prerelease: false
       on:
@@ -115,4 +115,4 @@ on_finish:
   # Upload test results to AppVeyor
   - ps: |
       $wc = New-Object 'System.Net.WebClient'
-      $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path pagral\coverage.xml))
+      $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path pagral\coverage.xml))
