@@ -79,7 +79,7 @@ test_script:
 #  - ps: "cd .."
 
 
-after_test:
+# after_test:
   # - python setup.py bdist_wheel -d pypi_dist clean --all
   # - conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
   # - ps: "ls pypi_dist"
