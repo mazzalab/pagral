@@ -75,6 +75,7 @@ test_script:
   - python -m unittest tests.graph.test_basegraph
   - coverage run -m unittest tests.graph.test_basegraph
   - coverage xml
+  - ps: "cd .."
 
 # after_test:
   # - python setup.py bdist_wheel -d pypi_dist clean --all
@@ -83,9 +84,10 @@ test_script:
   # - ps: "ls conda_dist"
 
 
-#artifacts:
+artifacts:
 # - path: conda_dist\**\*.tar.bz2
 # - path: pypi_dist\*.whl
+  - path: pagral\coverage.xml
 
 # on_success:
 #  - TODO: upload the content of dist/*.whl to a public wheelhouse
@@ -96,8 +98,7 @@ on_finish:
   # - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
 
   # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-  # - codecov -t CODECOV_TOKEN
-  - bash <(curl -s https://codecov.io/bash)
+  - codecov -t CODECOV_TOKEN
 
   # Upload test results to AppVeyor
   #  - ps: |
