@@ -109,4 +109,4 @@ on_finish:
       $content.'test-results'.'test-suite'.type = "Powershell"
       $content.Save("C:\projects\pagral\pagral\coverage.xml")
       $wc = New-Object 'System.Net.WebClient'
-      $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\pagral\coverage.xml))
+      $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path "C:\projects\pagral\pagral\coverage.xml"))
