@@ -97,6 +97,8 @@ artifacts:
 
 deploy:
   - provider: GitHub
+    release: pagral-v$(APPVEYOR_BUILD_VERSION)
+    description: 'Latest tagged release of Pagral'
     artifact: pagral\coverage.xml           # upload all NuGet packages to release assets
     draft: false
     prerelease: false
