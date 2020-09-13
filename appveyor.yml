@@ -77,8 +77,8 @@ test_script:
   - coverage xml
   - ps: "cd .."
 
-# after_test:
-  # - python setup.py bdist_wheel -d pypi_dist clean --all
+after_test:
+  - python setup.py bdist_wheel -d pypi_dist clean --all
   # - conda build --quiet -c conda-forge conda-recipe --output-folder conda_dist
   # - ps: "ls pypi_dist"
   # - ps: "ls conda_dist"
@@ -86,8 +86,8 @@ test_script:
 
 artifacts:
 # - path: conda_dist\**\*.tar.bz2
-# - path: pypi_dist\*.whl
-#  - path: pagral\coverage.xml
+  - path: pypi_dist\*.whl
+  - path: pagral\coverage.xml
   - path: pagral\.coverage
 
 
@@ -99,7 +99,7 @@ deploy:
   - provider: GitHub
     release: pagral-v$(APPVEYOR_BUILD_VERSION)
     description: 'Latest tagged release of Pagral'
-    artifact: pagral\coverage.xml           # upload all NuGet packages to release assets
+    artifact: pypi_dist\*.whl
     draft: false
     prerelease: false
     auth_token:
