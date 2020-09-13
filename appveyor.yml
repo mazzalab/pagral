@@ -106,7 +106,7 @@ deploy:
       branch: master                # release from master branch only
       APPVEYOR_REPO_TAG: false       # deploy on tag push only
 
-on_finish:
+# on_finish:
   # - sh: export APPVEYOR_SSH_BLOCK=true
   # - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
 
