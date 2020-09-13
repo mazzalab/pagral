@@ -76,7 +76,7 @@ test_script:
   - coverage run -m unittest tests.graph.test_basegraph
   - coverage xml
   - ps: "ls ."
-  - ps: "cd .."
+#  - ps: "cd .."
 
 
 after_test:
