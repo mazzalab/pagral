@@ -95,7 +95,7 @@ test_script:
 #
 
 on_finish:
-  - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash) -f C:\projects\pagral\pagral\coverage.xml
   # - sh: export APPVEYOR_SSH_BLOCK=true
   # - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
 
